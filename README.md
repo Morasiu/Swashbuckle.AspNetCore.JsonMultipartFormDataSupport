@@ -1,4 +1,4 @@
-![Nuget](https://img.shields.io/nuget/v/Swashbuckle.AspNetCore.JsonMultipartFormDataSupport)
+[![https://www.nuget.org/packages/Swashbuckle.AspNetCore.JsonMultipartFormDataSupport](https://img.shields.io/nuget/v/Swashbuckle.AspNetCore.JsonMultipartFormDataSupport)](https://www.nuget.org/packages/Swashbuckle.AspNetCore.JsonMultipartFormDataSupport/)
 
 # Swashbuckle.AspNetCore.JsonMultipartFormDataSupport
 Adds support for json in multipart/form-data requests.
