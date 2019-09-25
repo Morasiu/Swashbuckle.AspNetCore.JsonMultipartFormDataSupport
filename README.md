@@ -60,8 +60,7 @@ and then
 [HttpPost]
 [Consumes("multipart/form-data")] 
 public async Task<IActionResult> Post([FromForm] MyWrapper myWrapper) {
-    var file = multiPartData.File;
-    var product = multiPartData.Json;
+    // code
 }
 ```
 
