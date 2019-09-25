@@ -48,10 +48,10 @@ Or you can create your on wrapper
 
 ```csharp
 public class MyWrapper {
-    	[FromJson] // <-- This attribute is required for binding.
-		public MyModel Json { get; set; }
+    [FromJson] // <-- This attribute is required for binding.
+    public MyModel Json { get; set; }
 
-		public IFormFile File { get; set; }
+    public IFormFile File { get; set; }
 }
 ```
 
