@@ -9,7 +9,8 @@
 	  <Description>Adds support for json in multipart/form-data requests.</Description>
 	  <Authors>Morasiu</Authors>
 	  <PackageProjectUrl>https://github.com/Morasiu/Swashbuckle.AspNetCore.JsonMultipartFormDataSupport</PackageProjectUrl>
-	  <Version>1.0.1</Version>
+	  <Version>1.1.0</Version>
+	  <PackageReleaseNotes />
   </PropertyGroup>
 
   <ItemGroup>

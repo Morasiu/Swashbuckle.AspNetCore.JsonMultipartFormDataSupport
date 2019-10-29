@@ -45,6 +45,16 @@ public async Task<IActionResult> Post([FromForm] MultipartFormData<Product> mult
     var product = multiPartData.Json;
 }
 ```
+or
+
+```csharp
+[HttpPost]
+[Consumes("multipart/form-data")] 
+public async Task<IActionResult> Post([FromForm] MultipartRequiredFormData<Product> multiPartData) {
+    var file = multiPartData.File;
+    var product = multiPartData.Json;
+}
+```
 
 Or you can create your on wrapper
 
