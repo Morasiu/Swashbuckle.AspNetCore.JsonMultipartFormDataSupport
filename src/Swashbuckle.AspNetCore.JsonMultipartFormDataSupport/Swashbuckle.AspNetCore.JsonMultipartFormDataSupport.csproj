@@ -13,6 +13,10 @@
 	  <PackageReleaseNotes />
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>D:\Projekty\Swashbuckle.MultipartJson\src\Swashbuckle.AspNetCore.JsonMultipartFormDataSupport\Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />

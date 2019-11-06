@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Swashbuckle.AspNetCore.JsonMultipartFormDataSupport</name>
+    </assembly>
+    <members>
+        <member name="T:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.FormDataJsonBinderProvider">
+            <summary>
+            Looks for field with <see cref="T:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.FromJsonAttribute"/> and use <see cref="T:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.JsonModelBinder"/> for binder.
+            </summary>
+        </member>
+        <member name="M:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.FormDataJsonBinderProvider.GetBinder(Microsoft.AspNetCore.Mvc.ModelBinding.ModelBinderProviderContext)">
+            <inheritdoc />
+        </member>
+        <member name="T:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.FromJsonAttribute">
+            <summary>
+            Suggest that this form file should be deserialized from JSON.
+            </summary>
+        </member>
+        <member name="T:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.JsonModelBinder">
+            <summary>
+            Binds field from JSON string.
+            </summary>
+        </member>
+        <member name="M:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.JsonModelBinder.BindModelAsync(Microsoft.AspNetCore.Mvc.ModelBinding.ModelBindingContext)">
+            <inheritdoc />
+        </member>
+        <member name="T:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.MultipartFormData`1">
+            <summary>
+            Wrapper for sending json with image in multipart/form-data
+            </summary>
+            <typeparam name="TJsonPart"></typeparam>
+        </member>
+        <member name="P:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.MultipartFormData`1.Json">
+            <summary>
+            Object of type <typeparamref name="TJsonPart"/> mapped from JSON.
+            </summary>
+        </member>
+        <member name="P:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.MultipartFormData`1.File">
+            <summary>
+            IFormFile form multipart/form-data
+            </summary>
+        </member>
+        <member name="M:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.MultipartFromDataServicesExtension.AddJsonMultipartFormDataSupport(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Adds support for json in multipart/form-data requests
+            </summary>
+        </member>
+        <member name="T:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.MultiPartJsonOperationFilter">
+            <summary>
+            Aggregates form fields in Swagger to one JSON field and add example.
+            </summary>
+        </member>
+        <member name="M:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.MultiPartJsonOperationFilter.#ctor(System.IServiceProvider,Microsoft.Extensions.Options.IOptions{Microsoft.AspNetCore.Mvc.MvcJsonOptions})">
+            <inheritdoc />
+        </member>
+        <member name="M:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.MultiPartJsonOperationFilter.Apply(Microsoft.OpenApi.Models.OpenApiOperation,Swashbuckle.AspNetCore.SwaggerGen.OperationFilterContext)">
+            <inheritdoc />
+        </member>
+        <member name="T:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.MultipartRequiredFormData`1">
+            <summary>
+            Wrapper for sending json with REQUIRED image in multipart/form-data.
+            </summary>
+            <typeparam name="TJsonPart"></typeparam>
+        </member>
+        <member name="P:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.MultipartRequiredFormData`1.Json">
+            <summary>
+            Object of type <typeparamref name="TJsonPart"/> mapped from JSON.
+            </summary>
+        </member>
+        <member name="P:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.MultipartRequiredFormData`1.File">
+            <summary>
+            IFormFile form multipart/form-data
+            </summary>
+        </member>
+    </members>
+</doc>
