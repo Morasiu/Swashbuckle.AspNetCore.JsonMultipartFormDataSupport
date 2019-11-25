@@ -84,6 +84,8 @@ namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport {
 
 		private void AddExample(PropertyInfo propertyInfo, OpenApiSchema openApiSchema) {
 			var example = GetExampleFor(propertyInfo.PropertyType);
+			// Example do not exist. Use default.
+			if (example == null) return;
 			var json = JsonConvert.SerializeObject(example, _jsonOptions.Value.SerializerSettings);
 			openApiSchema.Example = new OpenApiString(json);
 		}
@@ -92,6 +94,9 @@ namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport {
 			var makeGenericType = typeof(IExamplesProvider<>).MakeGenericType(parameterType);
 			var method = makeGenericType.GetMethod("GetExamples");
 			var exampleProvider = _serviceProvider.GetService(makeGenericType);
+			// Example do not exist. Use default.
+			if (exampleProvider == null) 
+				return null;
 			var example = method?.Invoke(exampleProvider, null);
 			return example;
 		}

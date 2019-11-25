@@ -9,10 +9,10 @@
 	  <Description>Adds support for json in multipart/form-data requests.</Description>
 	  <Authors>Morasiu</Authors>
 	  <PackageProjectUrl>https://github.com/Morasiu/Swashbuckle.AspNetCore.JsonMultipartFormDataSupport</PackageProjectUrl>
-	  <Version>1.1.1</Version>
-	  <PackageReleaseNotes>Added XML docs</PackageReleaseNotes>
-	  <AssemblyVersion>1.1.1.0</AssemblyVersion>
-	  <FileVersion>1.1.1.0</FileVersion>
+	  <Version>1.1.2</Version>
+	  <PackageReleaseNotes>- Fixed bug, when there was not ExmapleProvider for given [FromJson] class.</PackageReleaseNotes>
+	  <AssemblyVersion>1.1.2.0</AssemblyVersion>
+	  <FileVersion>1.1.2.0</FileVersion>
 	  <RepositoryType></RepositoryType>
   </PropertyGroup>
 
