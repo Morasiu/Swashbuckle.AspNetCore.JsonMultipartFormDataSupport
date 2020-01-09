@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport {
 	/// <summary>
@@ -21,7 +21,7 @@ namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport {
 
 				// Attempt to convert the input value
 				var valueAsString = valueProviderResult.FirstValue;
-				var result = JsonConvert.DeserializeObject(valueAsString, bindingContext.ModelType);
+				var result = JsonSerializer.Deserialize(valueAsString, bindingContext.ModelType);
 				if (result != null) {
 					bindingContext.Result = ModelBindingResult.Success(result);
 					return Task.CompletedTask;

@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
-using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.Filters;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -17,10 +16,10 @@ namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport {
 	/// </summary>
 	public class MultiPartJsonOperationFilter : IOperationFilter {
 		private readonly IServiceProvider _serviceProvider;
-		private readonly IOptions<MvcJsonOptions> _jsonOptions;
+		private readonly IOptions<JsonSerializerOptions> _jsonOptions;
 
 		/// <inheritdoc />
-		public MultiPartJsonOperationFilter(IServiceProvider serviceProvider, IOptions<MvcJsonOptions> jsonOptions) {
+		public MultiPartJsonOperationFilter(IServiceProvider serviceProvider, IOptions<JsonSerializerOptions> jsonOptions) {
 			_serviceProvider = serviceProvider;
 			_jsonOptions = jsonOptions;
 		}
@@ -86,7 +85,7 @@ namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport {
 			var example = GetExampleFor(propertyInfo.PropertyType);
 			// Example do not exist. Use default.
 			if (example == null) return;
-			var json = JsonConvert.SerializeObject(example, _jsonOptions.Value.SerializerSettings);
+			var json = JsonSerializer.Serialize(example, _jsonOptions.Value);
 			openApiSchema.Example = new OpenApiString(json);
 		}
 

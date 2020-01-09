@@ -1,6 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
 namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport {
+	/// <summary>
+	/// Extensions for ASP.Net Core IServiceCollection
+	/// </summary>
 	public static class MultipartFromDataServicesExtension {
 		/// <summary>
 		/// Adds support for json in multipart/form-data requests

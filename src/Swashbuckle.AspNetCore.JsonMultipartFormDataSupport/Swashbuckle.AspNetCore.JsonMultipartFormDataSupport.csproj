@@ -9,10 +9,10 @@
 	  <Description>Adds support for json in multipart/form-data requests.</Description>
 	  <Authors>Morasiu</Authors>
 	  <PackageProjectUrl>https://github.com/Morasiu/Swashbuckle.AspNetCore.JsonMultipartFormDataSupport</PackageProjectUrl>
-	  <Version>1.1.2</Version>
-	  <PackageReleaseNotes>- Fixed bug, when there was not ExmapleProvider for given [FromJson] class.</PackageReleaseNotes>
-	  <AssemblyVersion>1.1.2.0</AssemblyVersion>
-	  <FileVersion>1.1.2.0</FileVersion>
+	  <Version>1.2.0</Version>
+	  <PackageReleaseNotes>- Changed serializaer to System.Text.Json</PackageReleaseNotes>
+	  <AssemblyVersion>1.2.0.0</AssemblyVersion>
+	  <FileVersion>1.2.0.0</FileVersion>
 	  <RepositoryType></RepositoryType>
   </PropertyGroup>
 
@@ -25,9 +25,9 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
     <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="5.0.0-rc8" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="5.0.0-rc3" />
+    <PackageReference Include="System.Text.Json" Version="4.7.0" />
   </ItemGroup>
 
   <ItemGroup>
