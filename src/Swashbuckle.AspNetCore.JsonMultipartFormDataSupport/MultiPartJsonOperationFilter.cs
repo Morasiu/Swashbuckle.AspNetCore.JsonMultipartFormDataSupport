@@ -9,6 +9,7 @@ using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport {
 	/// <summary>
@@ -19,9 +20,9 @@ namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport {
 		private readonly IOptions<JsonSerializerOptions> _jsonOptions;
 
 		/// <inheritdoc />
-		public MultiPartJsonOperationFilter(IServiceProvider serviceProvider, IOptions<JsonSerializerOptions> jsonOptions) {
-			_serviceProvider = serviceProvider;
-			_jsonOptions = jsonOptions;
+		public MultiPartJsonOperationFilter(IServiceProvider serviceProvider, IOptions<JsonOp> jsonOptions) {
+			_serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+			_jsonOptions = jsonOptions ?? throw new ArgumentNullException(nameof(jsonOptions));
 		}
 
 		/// <inheritdoc />
