@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text.Json;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport {
 	/// <summary>
@@ -17,10 +17,12 @@ namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport {
 	/// </summary>
 	public class MultiPartJsonOperationFilter : IOperationFilter {
 		private readonly IServiceProvider _serviceProvider;
-		private readonly IOptions<JsonSerializerOptions> _jsonOptions;
+		private readonly IOptions<JsonOptions> _jsonOptions;
 
-		/// <inheritdoc />
-		public MultiPartJsonOperationFilter(IServiceProvider serviceProvider, IOptions<JsonSerializerOptions> jsonOptions) {
+		/// <summary>
+		/// Creates <see cref="MultiPartJsonOperationFilter"/>
+		/// </summary>
+		public MultiPartJsonOperationFilter(IServiceProvider serviceProvider, IOptions<JsonOptions> jsonOptions) {
 			_serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
 			_jsonOptions = jsonOptions ?? throw new ArgumentNullException(nameof(jsonOptions));
 		}
@@ -86,7 +88,7 @@ namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport {
 			var example = GetExampleFor(propertyInfo.PropertyType);
 			// Example do not exist. Use default.
 			if (example == null) return;
-			var json = JsonSerializer.Serialize(example, _jsonOptions.Value);
+			var json = JsonSerializer.Serialize(example, _jsonOptions.Value.JsonSerializerOptions);
 			openApiSchema.Example = new OpenApiString(json);
 		}
 

@@ -56,8 +56,10 @@
             Aggregates form fields in Swagger to one JSON field and add example.
             </summary>
         </member>
-        <member name="M:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.MultiPartJsonOperationFilter.#ctor(System.IServiceProvider,Microsoft.Extensions.Options.IOptions{System.Text.Json.JsonSerializerOptions})">
-            <inheritdoc />
+        <member name="M:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.MultiPartJsonOperationFilter.#ctor(System.IServiceProvider,Microsoft.Extensions.Options.IOptions{Microsoft.AspNetCore.Mvc.JsonOptions})">
+            <summary>
+            Creates <see cref="T:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.MultiPartJsonOperationFilter"/>
+            </summary>
         </member>
         <member name="M:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.MultiPartJsonOperationFilter.Apply(Microsoft.OpenApi.Models.OpenApiOperation,Swashbuckle.AspNetCore.SwaggerGen.OperationFilterContext)">
             <inheritdoc />

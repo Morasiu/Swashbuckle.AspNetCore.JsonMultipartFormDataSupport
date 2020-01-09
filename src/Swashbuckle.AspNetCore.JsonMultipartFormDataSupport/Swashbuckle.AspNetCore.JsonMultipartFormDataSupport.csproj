@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	  <TargetFramework>netcoreapp2.2</TargetFramework>
+	  <TargetFramework>netcoreapp3.1</TargetFramework>
 	  <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	  <PackageTags>Swashbuckle</PackageTags>
 	  <RepositoryUrl>https://github.com/Morasiu/Swashbuckle.AspNetCore.JsonMultipartFormDataSupport</RepositoryUrl>
@@ -9,10 +9,10 @@
 	  <Description>Adds support for json in multipart/form-data requests.</Description>
 	  <Authors>Morasiu</Authors>
 	  <PackageProjectUrl>https://github.com/Morasiu/Swashbuckle.AspNetCore.JsonMultipartFormDataSupport</PackageProjectUrl>
-	  <Version>1.2.0</Version>
+	  <Version>1.2.2</Version>
 	  <PackageReleaseNotes>- Changed serializaer to System.Text.Json</PackageReleaseNotes>
-	  <AssemblyVersion>1.2.0.0</AssemblyVersion>
-	  <FileVersion>1.2.0.0</FileVersion>
+	  <AssemblyVersion>1.2.2.0</AssemblyVersion>
+	  <FileVersion>1.2.2.0</FileVersion>
 	  <RepositoryType></RepositoryType>
   </PropertyGroup>
 
@@ -25,8 +25,9 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
-    <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="5.0.0-rc8" />
-    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="5.0.0-rc3" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Formatters.Json" Version="2.2.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="5.0.0-rc9" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="5.0.0-rc5" />
     <PackageReference Include="System.Text.Json" Version="4.7.0" />
   </ItemGroup>
 
