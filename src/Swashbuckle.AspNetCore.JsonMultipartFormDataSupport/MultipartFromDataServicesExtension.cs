@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport {
 	/// <summary>
@@ -10,7 +12,7 @@ namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport {
 		/// </summary>
 		public static IServiceCollection AddJsonMultipartFormDataSupport(this IServiceCollection services) {
 			services.AddMvc(options => {
-				options.ModelBinderProviders.Insert(0, new FormDataJsonBinderProvider());
+				options.ModelBinderProviders.Insert(0, new FormDataJsonBinderProvider(services.BuildServiceProvider().GetRequiredService<IOptions<JsonOptions>>()));
 			});
 
 			services.AddSwaggerGen(options => {

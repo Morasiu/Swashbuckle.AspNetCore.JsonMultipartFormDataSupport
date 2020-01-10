@@ -22,9 +22,9 @@ namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport {
 		/// <summary>
 		/// Creates <see cref="MultiPartJsonOperationFilter"/>
 		/// </summary>
-		public MultiPartJsonOperationFilter(IServiceProvider serviceProvider, IOptions<JsonOptions> jsonOptions) {
+		public MultiPartJsonOperationFilter(IServiceProvider serviceProvider, IOptions<JsonOptions> jsonOptions = null) {
 			_serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
-			_jsonOptions = jsonOptions ?? throw new ArgumentNullException(nameof(jsonOptions));
+			_jsonOptions = jsonOptions;
 		}
 
 		/// <inheritdoc />

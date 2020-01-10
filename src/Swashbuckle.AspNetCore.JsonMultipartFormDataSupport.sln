@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.29306.81
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Swashbuckle.AspNetCore.JsonMultipartFormDataSupport", "Swashbuckle.AspNetCore.JsonMultipartFormDataSupport\Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.csproj", "{C7184D30-94B0-4687-A391-E47FA38D6FFB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo", "Demo\Demo.csproj", "{628C34DB-793B-4396-A3F9-60ECB5712378}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{C7184D30-94B0-4687-A391-E47FA38D6FFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C7184D30-94B0-4687-A391-E47FA38D6FFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C7184D30-94B0-4687-A391-E47FA38D6FFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{628C34DB-793B-4396-A3F9-60ECB5712378}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{628C34DB-793B-4396-A3F9-60ECB5712378}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{628C34DB-793B-4396-A3F9-60ECB5712378}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{628C34DB-793B-4396-A3F9-60ECB5712378}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

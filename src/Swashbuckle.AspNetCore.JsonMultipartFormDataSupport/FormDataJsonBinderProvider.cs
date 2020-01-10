@@ -1,13 +1,21 @@
 ﻿using System;
 using System.Reflection;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.Extensions.Options;
 
 namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport {
 	/// <summary>
 	/// Looks for field with <see cref="FromJsonAttribute"/> and use <see cref="JsonModelBinder"/> for binder.
 	/// </summary>
 	public class FormDataJsonBinderProvider : IModelBinderProvider {
+		private readonly IOptions<JsonOptions> _jsonOptions;
+
+		public FormDataJsonBinderProvider(IOptions<JsonOptions> jsonOptions) {
+			_jsonOptions = jsonOptions;
+		}
+
 		/// <inheritdoc />
 		public IModelBinder GetBinder(ModelBinderProviderContext context) {
 			if (context == null) throw new ArgumentNullException(nameof(context));
@@ -27,7 +35,7 @@ namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport {
 			if (propInfo.GetCustomAttribute<FromJsonAttribute>() == null) return null;
 
 			// All criteria met; use the FormDataJsonBinder
-			return new JsonModelBinder();
+			return new JsonModelBinder(_jsonOptions);
 		}
 	}
 }
