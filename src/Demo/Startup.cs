@@ -37,7 +37,6 @@ namespace Demo {
 					Title = "Demo",
 					Version = "v1"
 				});
-				// o.AddEnumsWithValuesFixFilters(true);
 			});
 		}
 
