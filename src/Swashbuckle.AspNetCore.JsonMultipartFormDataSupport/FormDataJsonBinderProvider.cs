@@ -11,9 +11,15 @@ namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport {
 	/// </summary>
 	public class FormDataJsonBinderProvider : IModelBinderProvider {
 		private readonly IOptions<JsonOptions> _jsonOptions;
+		private readonly IOptions<MvcNewtonsoftJsonOptions> _newtonSoftJsonOptions;
 
 		public FormDataJsonBinderProvider(IOptions<JsonOptions> jsonOptions) {
 			_jsonOptions = jsonOptions;
+		}
+
+
+		public FormDataJsonBinderProvider(IOptions<MvcNewtonsoftJsonOptions> newtonSoftJsonOptions) {
+			_newtonSoftJsonOptions = newtonSoftJsonOptions;
 		}
 
 		/// <inheritdoc />
@@ -31,11 +37,16 @@ namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport {
 			// Do not use this provider if the target property type implements IFormFile
 			if (propInfo.PropertyType.IsAssignableFrom(typeof(IFormFile))) return null;
 
-			// Do not use this provider if this property does not have the FromForm attribute
+			// Do not use this provider if this property does not have the From attribute
 			if (propInfo.GetCustomAttribute<FromJsonAttribute>() == null) return null;
 
 			// All criteria met; use the FormDataJsonBinder
-			return new JsonModelBinder(_jsonOptions);
+			if (_jsonOptions != null)
+				return new JsonModelBinder(_jsonOptions);
+			else if (_newtonSoftJsonOptions != null)
+				return new JsonModelBinder(_newtonSoftJsonOptions);
+			else
+				return new JsonModelBinder();
 		}
 	}
 }

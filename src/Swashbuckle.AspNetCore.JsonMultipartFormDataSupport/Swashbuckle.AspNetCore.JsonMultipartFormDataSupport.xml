@@ -46,7 +46,7 @@
             Extensions for ASP.Net Core IServiceCollection
             </summary>
         </member>
-        <member name="M:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.MultipartFromDataServicesExtension.AddJsonMultipartFormDataSupport(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+        <member name="M:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.MultipartFromDataServicesExtension.AddJsonMultipartFormDataSupport(Microsoft.Extensions.DependencyInjection.IServiceCollection,Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.JsonSerializerChoice)">
             <summary>
             Adds support for json in multipart/form-data requests
             </summary>
@@ -56,7 +56,7 @@
             Aggregates form fields in Swagger to one JSON field and add example.
             </summary>
         </member>
-        <member name="M:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.MultiPartJsonOperationFilter.#ctor(System.IServiceProvider,Microsoft.Extensions.Options.IOptions{Microsoft.AspNetCore.Mvc.JsonOptions})">
+        <member name="M:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.MultiPartJsonOperationFilter.#ctor(System.IServiceProvider,Microsoft.Extensions.Options.IOptions{Microsoft.AspNetCore.Mvc.JsonOptions},Microsoft.Extensions.Options.IOptions{Microsoft.AspNetCore.Mvc.MvcNewtonsoftJsonOptions})">
             <summary>
             Creates <see cref="T:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.MultiPartJsonOperationFilter"/>
             </summary>

@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+## [1.3.0] - 2020-01-13
+### Changed
+ - Now you can choose your serializer.
+
 ## [1.2.3] - 2020-01-09
 ### Changed
  - JSON serializer from NewtonSoft to System.Text.Json

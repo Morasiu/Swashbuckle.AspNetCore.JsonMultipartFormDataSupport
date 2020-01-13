@@ -20,8 +20,8 @@ namespace Demo.Controllers {
 		}
 
 		[HttpPost]
-		public IActionResult Post([FromForm] MultipartRequiredFormData<Product> data) {
-			var json = data.Json;
+		public IActionResult Post([FromForm] MultipartFormData<Product> data) {
+			var json = data.Json ?? throw new NullReferenceException(nameof(data));
 			var image = data.File;
 			return Ok();
 		}
