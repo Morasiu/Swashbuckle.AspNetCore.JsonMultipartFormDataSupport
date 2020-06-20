@@ -16,20 +16,17 @@
 	  <RepositoryType></RepositoryType>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>D:\Projekty\Swashbuckle.MultipartJson\src\Swashbuckle.AspNetCore.JsonMultipartFormDataSupport\Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.xml</DocumentationFile>
-  </PropertyGroup>
-
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="3.1.3" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Formatters.Json" Version="2.2.0" />
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.5" />
     <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="5.1.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="5.3.1" />
-    <PackageReference Include="System.Text.Json" Version="4.7.1" />
   </ItemGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>.\Swashbuckle.AspNetCore.JsonMultipartFormDataSupport\Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.xml</DocumentationFile>
+  </PropertyGroup>
 
   <ItemGroup>
     <None Include="..\..\LICENSE">
