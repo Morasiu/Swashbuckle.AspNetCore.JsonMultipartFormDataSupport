@@ -25,5 +25,12 @@ namespace Demo.Controllers {
 			var image = data.File;
 			return Ok();
 		}
+
+		[HttpPost("wrapper")]
+		public IActionResult PostWrapper([FromForm] ProductWrapper wrapper) {
+			var wrapperProduct = wrapper.Product?? throw new NullReferenceException(nameof(wrapper.Product));
+			var image = wrapper.Files;
+			return Ok();
+		}
 	}
 }
