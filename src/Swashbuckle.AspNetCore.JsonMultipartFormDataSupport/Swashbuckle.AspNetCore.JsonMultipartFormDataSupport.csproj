@@ -6,10 +6,10 @@
 	  <PackageTags>Swashbuckle</PackageTags>
 	  <RepositoryUrl>https://github.com/Morasiu/Swashbuckle.AspNetCore.JsonMultipartFormDataSupport</RepositoryUrl>
 	  <PackageLicenseFile>LICENSE</PackageLicenseFile>
-	  <Description>Support for Swagger 5.3.1 version</Description>
+	  <Description>Fixed dependencies to target Asp.NetCore 3.1</Description>
 	  <Authors>Morasiu</Authors>
 	  <PackageProjectUrl>https://github.com/Morasiu/Swashbuckle.AspNetCore.JsonMultipartFormDataSupport</PackageProjectUrl>
-	  <Version>1.4.0</Version>
+	  <Version>1.4.1</Version>
 	  <PackageReleaseNotes>- Now you can choose your serializer.</PackageReleaseNotes>
 	  <AssemblyVersion>1.4.0.0</AssemblyVersion>
 	  <FileVersion>1.4.0.0</FileVersion>
