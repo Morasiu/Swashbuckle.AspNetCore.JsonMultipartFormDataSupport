@@ -50,11 +50,7 @@ namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport {
 						if (property.Key == propertyInfo.Name) {
 							AddEncoding(mediaType, propertyInfo);
 
-							var openApiSchema = GenerateSchema(context, propertyInfo);
-
-							AddDescription(openApiSchema, propertyInfo);
-							AddExample(propertyInfo, openApiSchema);
-
+							var openApiSchema = GetSchema(context, propertyInfo);
 							schemaProperties.Add(property.Key, openApiSchema);
 						}
 						else {
@@ -67,14 +63,25 @@ namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport {
 			}
 		}
 
-		private static OpenApiSchema GenerateSchema(OperationFilterContext context, PropertyInfo propertyInfo) {
-			context.SchemaGenerator.GenerateSchema(propertyInfo.PropertyType, context.SchemaRepository);
-			var openApiSchema = context.SchemaRepository.Schemas[propertyInfo.PropertyType.Name];
-			return openApiSchema;
+		/// <summary>
+		/// Generate schema for propertyInfo
+		/// </summary>
+		/// <returns></returns>
+		private OpenApiSchema GetSchema(OperationFilterContext context, PropertyInfo propertyInfo) {
+			bool present = context.SchemaRepository.TryGetIdFor(propertyInfo.PropertyType, out string schemaId);
+			if (!present)
+			{
+				_ = context.SchemaGenerator.GenerateSchema(propertyInfo.PropertyType, context.SchemaRepository);
+				_ = context.SchemaRepository.TryGetIdFor(propertyInfo.PropertyType, out schemaId);
+				var schema = context.SchemaRepository.Schemas[schemaId];
+				AddDescription(schema, schemaId);
+				AddExample(propertyInfo, schema);
+			}
+			return context.SchemaRepository.Schemas[schemaId];
 		}
 
-		private static void AddDescription(OpenApiSchema openApiSchema, PropertyInfo propertyInfo) {
-			openApiSchema.Description += $"\n See {propertyInfo.PropertyType.Name} model.";
+		private static void AddDescription(OpenApiSchema openApiSchema, string SchemaDisplayName) {
+			openApiSchema.Description += $"\n See {SchemaDisplayName} model.";
 		}
 
 		private static void AddEncoding(OpenApiMediaType mediaType, PropertyInfo propertyInfo) {
