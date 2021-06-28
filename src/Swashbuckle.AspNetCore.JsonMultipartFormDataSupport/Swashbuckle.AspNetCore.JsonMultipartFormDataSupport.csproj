@@ -9,7 +9,6 @@
 	  <Description>Support JSON Multipart data in Swashbuckle </Description>
 	  <Authors>Morasiu</Authors>
 	  <PackageProjectUrl>https://github.com/Morasiu/Swashbuckle.AspNetCore.JsonMultipartFormDataSupport</PackageProjectUrl>
-	  <Version>1.4.2</Version>
 	  <PackageReleaseNotes>## [1.5.0] - 2021-06-28
 ### Added
 - Support for OpenAPI CustomSchemaIds in JSON part</PackageReleaseNotes>
