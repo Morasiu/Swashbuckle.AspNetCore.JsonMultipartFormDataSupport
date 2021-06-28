@@ -6,16 +6,17 @@
 	  <PackageTags>Swashbuckle</PackageTags>
 	  <RepositoryUrl>https://github.com/Morasiu/Swashbuckle.AspNetCore.JsonMultipartFormDataSupport</RepositoryUrl>
 	  <PackageLicenseFile>LICENSE</PackageLicenseFile>
-	  <Description>Fixed dependencies to target Asp.NetCore 3.1</Description>
+	  <Description>Support JSON Multipart data in Swashbuckle </Description>
 	  <Authors>Morasiu</Authors>
 	  <PackageProjectUrl>https://github.com/Morasiu/Swashbuckle.AspNetCore.JsonMultipartFormDataSupport</PackageProjectUrl>
 	  <Version>1.4.2</Version>
-	  <PackageReleaseNotes>## [1.4.2] - 2020-09-22
-### Fixed
- - Now invalid json returns null instead of throwing JsonParser exception and causing HTTP 500</PackageReleaseNotes>
+	  <PackageReleaseNotes>## [1.5.0] - 2021-06-28
+### Added
+- Support for OpenAPI CustomSchemaIds in JSON part</PackageReleaseNotes>
 	  <AssemblyVersion>0.0.0.0</AssemblyVersion>
 	  <FileVersion>0.0.0.0</FileVersion>
 	  <RepositoryType></RepositoryType>
+	  <PackageVersion>1.5.0</PackageVersion>
   </PropertyGroup>
 
   <ItemGroup>
