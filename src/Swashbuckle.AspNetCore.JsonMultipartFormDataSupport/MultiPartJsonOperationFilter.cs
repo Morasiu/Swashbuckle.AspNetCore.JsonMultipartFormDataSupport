@@ -67,17 +67,18 @@ namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport {
 		/// Generate schema for propertyInfo
 		/// </summary>
 		/// <returns></returns>
-		private OpenApiSchema GetSchema(OperationFilterContext context, PropertyInfo propertyInfo) {
-			bool present = context.SchemaRepository.TryGetIdFor(propertyInfo.PropertyType, out string schemaId);
+		private OpenApiSchema GetSchema(OperationFilterContext context, PropertyInfo propertyInfo)
+		{
+			bool present = context.SchemaRepository.TryLookupByType(propertyInfo.PropertyType, out OpenApiSchema openApiSchema);
 			if (!present)
 			{
 				_ = context.SchemaGenerator.GenerateSchema(propertyInfo.PropertyType, context.SchemaRepository);
-				_ = context.SchemaRepository.TryGetIdFor(propertyInfo.PropertyType, out schemaId);
-				var schema = context.SchemaRepository.Schemas[schemaId];
-				AddDescription(schema, schemaId);
+				_ = context.SchemaRepository.TryLookupByType(propertyInfo.PropertyType, out openApiSchema);
+				var schema = context.SchemaRepository.Schemas[openApiSchema.Reference.Id];
+				AddDescription(schema, openApiSchema.Title);
 				AddExample(propertyInfo, schema);
 			}
-			return context.SchemaRepository.Schemas[schemaId];
+			return context.SchemaRepository.Schemas[openApiSchema.Reference.Id];
 		}
 
 		private static void AddDescription(OpenApiSchema openApiSchema, string SchemaDisplayName) {

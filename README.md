@@ -10,7 +10,7 @@ Adds support for json in multipart/form-data requests.
 1. Simple add this to your `ConfigureServices`
 
 ```csharp
-services.AddJsonMultipartFormDataSupport();
+services.AddJsonMultipartFormDataSupport(JsonSerializerChoice.Newtonsoft);
 ```
 
 Or manually:
