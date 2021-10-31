@@ -52,7 +52,7 @@ namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Integrations {
 						result = JsonSerializer.Deserialize(valueAsString, bindingContext.ModelType,
 							_jsonOptions.Value.JsonSerializerOptions);
 					}
-					catch (JsonException e) {
+					catch (System.Text.Json.JsonException e) {
 						bindingContext.ModelState.AddModelError(modelBindingKey, e, bindingContext.ModelMetadata);
 						return Task.CompletedTask;
 					}
@@ -62,7 +62,7 @@ namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Integrations {
 						result = JsonConvert.DeserializeObject(valueAsString, bindingContext.ModelType,
 							_newtonsoftJsonOptions.Value.SerializerSettings);
 					}
-					catch (JsonReaderException e) {
+					catch (JsonSerializationException e) {
 						bindingContext.ModelState.TryAddModelException(modelBindingKey, e);
 						return Task.CompletedTask;
 					}
@@ -71,7 +71,7 @@ namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Integrations {
 					try {
 						result = JsonSerializer.Deserialize(valueAsString, bindingContext.ModelType);
 					}
-					catch (JsonException e) {
+					catch (System.Text.Json.JsonException e) {
 						bindingContext.ModelState.TryAddModelException(modelBindingKey, e);
 						return Task.CompletedTask;
 					}
