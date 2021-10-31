@@ -4,8 +4,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Options;
+using Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Attributes;
 
-namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport {
+namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Integrations {
 	/// <summary>
 	/// Looks for field with <see cref="FromJsonAttribute"/> and use <see cref="JsonModelBinder"/> for binder.
 	/// </summary>

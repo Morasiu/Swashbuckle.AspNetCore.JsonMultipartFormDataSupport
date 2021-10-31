@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	  <TargetFramework>netcoreapp3.1</TargetFramework>
 	  <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	  <PackageTags>Swashbuckle</PackageTags>
 	  <RepositoryUrl>https://github.com/Morasiu/Swashbuckle.AspNetCore.JsonMultipartFormDataSupport</RepositoryUrl>
@@ -9,21 +8,26 @@
 	  <Description>Support JSON Multipart data in Swashbuckle </Description>
 	  <Authors>Morasiu</Authors>
 	  <PackageProjectUrl>https://github.com/Morasiu/Swashbuckle.AspNetCore.JsonMultipartFormDataSupport</PackageProjectUrl>
-	  <PackageReleaseNotes>## [1.5.0] - 2021-06-28
+	  <PackageReleaseNotes>## [1.6.0] - 2021-10-31
 ### Added
-- Support for OpenAPI CustomSchemaIds in JSON part</PackageReleaseNotes>
+- Support for option `DescribeAllParametersInCamelCase()`
+
+### Fixed
+- Now any json Serialization Exception is treated like model error instead of throwing HTTP 500 
+</PackageReleaseNotes>
 	  <AssemblyVersion>0.0.0.0</AssemblyVersion>
 	  <FileVersion>0.0.0.0</FileVersion>
 	  <RepositoryType></RepositoryType>
-	  <PackageVersion>1.5.0</PackageVersion>
+	  <PackageVersion>1.6.0</PackageVersion>
+	  <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
     
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.5" />
-    <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="5.1.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.1.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.11" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="7.0.2" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.2.3" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

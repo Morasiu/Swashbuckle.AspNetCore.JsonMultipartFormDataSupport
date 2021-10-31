@@ -1,4 +1,4 @@
-using System.Text.Json.Serialization;
+using Demo.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -7,8 +7,11 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
 using Swashbuckle.AspNetCore.Filters;
 using Swashbuckle.AspNetCore.JsonMultipartFormDataSupport;
+using Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Extensions;
+using Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Integrations;
 
 namespace Demo {
 	public class Startup {
