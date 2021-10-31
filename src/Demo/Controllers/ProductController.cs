@@ -7,6 +7,7 @@ using Demo.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Swashbuckle.AspNetCore.JsonMultipartFormDataSupport;
+using Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Models;
 
 namespace Demo.Controllers {
 	[Produces("application/json")]

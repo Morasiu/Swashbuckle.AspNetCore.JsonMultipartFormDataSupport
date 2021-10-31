@@ -9,10 +9,11 @@ using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.Filters;
+using Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Attributes;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
-namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport {
+namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Integrations {
 	/// <summary>
 	/// Aggregates form fields in Swagger to one JSON field and add example.
 	/// </summary>

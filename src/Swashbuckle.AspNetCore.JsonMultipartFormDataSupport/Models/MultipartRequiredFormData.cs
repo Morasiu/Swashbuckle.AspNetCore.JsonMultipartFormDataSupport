@@ -1,7 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Http;
+using Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Attributes;
 
-namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport {
+namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Models {
 	/// <summary>
 	/// Wrapper for sending json with REQUIRED image in multipart/form-data.
 	/// </summary>

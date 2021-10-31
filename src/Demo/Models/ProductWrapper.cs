@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using Swashbuckle.AspNetCore.JsonMultipartFormDataSupport;
+using Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Attributes;
 
 namespace Demo.Models {
 	public class ProductWrapper {
