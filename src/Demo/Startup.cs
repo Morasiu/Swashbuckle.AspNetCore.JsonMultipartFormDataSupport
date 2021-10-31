@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
 using Swashbuckle.AspNetCore.Filters;
 using Swashbuckle.AspNetCore.JsonMultipartFormDataSupport;
 using Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Extensions;
