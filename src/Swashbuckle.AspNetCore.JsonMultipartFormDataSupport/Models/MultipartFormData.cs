@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Attributes;
 
-namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport {
+namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Models {
 	/// <summary>
 	/// Wrapper for sending json with image in multipart/form-data
 	/// </summary>

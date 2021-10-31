@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
-namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport {
+namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Integrations {
 	/// <summary>
 	/// Binds field from JSON string.
 	/// </summary>

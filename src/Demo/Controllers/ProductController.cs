@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Threading.Tasks;
 using Demo.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Swashbuckle.AspNetCore.JsonMultipartFormDataSupport;
+using Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Models;
 
 namespace Demo.Controllers {
 	[Produces("application/json")]

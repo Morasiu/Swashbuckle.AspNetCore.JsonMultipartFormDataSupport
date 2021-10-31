@@ -2,8 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Integrations;
 
-namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport {
+namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Extensions {
 	/// <summary>
 	/// Extensions for ASP.Net Core IServiceCollection
 	/// </summary>

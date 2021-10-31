@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	  <TargetFramework>netcoreapp3.1</TargetFramework>
 	  <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	  <PackageTags>Swashbuckle</PackageTags>
 	  <RepositoryUrl>https://github.com/Morasiu/Swashbuckle.AspNetCore.JsonMultipartFormDataSupport</RepositoryUrl>
@@ -16,14 +15,15 @@
 	  <FileVersion>0.0.0.0</FileVersion>
 	  <RepositoryType></RepositoryType>
 	  <PackageVersion>1.5.0</PackageVersion>
+	  <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
     
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.5" />
-    <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="5.1.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.1.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.11" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="7.0.2" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.2.3" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
