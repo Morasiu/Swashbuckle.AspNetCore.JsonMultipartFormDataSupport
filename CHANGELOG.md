@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Support for option `DescribeAllParametersInCamelCase()`
 
+### Fixed
+- Now any json Serialization Exception is treated like model error instead of throwing HTTP 500 
+
 ## [1.5.0] - 2021-06-28
 ### Added
 - Support for OpenAPI CustomSchemaIds in JSON part
