@@ -93,8 +93,8 @@ namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Integrations {
 			return context.SchemaRepository.Schemas[openApiSchema.Reference.Id];
 		}
 
-		private static void AddDescription(OpenApiSchema openApiSchema, string SchemaDisplayName) {
-			openApiSchema.Description += $"\n See {SchemaDisplayName} model.";
+		private static void AddDescription(OpenApiSchema openApiSchema, string schemaDisplayName) {
+			openApiSchema.Description += $"\n See {schemaDisplayName} model.";
 		}
 
 		private static void AddEncoding(OpenApiMediaType mediaType, PropertyInfo propertyInfo) {

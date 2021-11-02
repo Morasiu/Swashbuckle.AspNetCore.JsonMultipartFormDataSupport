@@ -32,7 +32,7 @@ namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Integrations {
 
 			string modelBindingKey;
 			if (bindingContext.IsTopLevelObject) {
-				modelBindingKey = bindingContext.BinderModelName ?? string.Empty;
+				modelBindingKey = bindingContext.BinderModelName;
 			}
 			else {
 				modelBindingKey = bindingContext.ModelName;
@@ -46,44 +46,36 @@ namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Integrations {
 				// Attempt to convert the input value
 				var valueAsString = valueProviderResult.FirstValue;
 
-				object result;
-				if (_jsonOptions != null) {
-					try {
-						result = JsonSerializer.Deserialize(valueAsString, bindingContext.ModelType,
-							_jsonOptions.Value.JsonSerializerOptions);
+				try {
+					object result;
+					if (_jsonOptions != null) {
+						result = DeserializeUsingSystemSerializer(bindingContext, valueAsString);
 					}
-					catch (System.Text.Json.JsonException e) {
-						bindingContext.ModelState.AddModelError(modelBindingKey, e, bindingContext.ModelMetadata);
-						return Task.CompletedTask;
+					else if (_newtonsoftJsonOptions != null) {
+						result = DeserializeUsingJsonNet(bindingContext, valueAsString);
 					}
-				}
-				else if (_newtonsoftJsonOptions != null) {
-					try {
-						result = JsonConvert.DeserializeObject(valueAsString, bindingContext.ModelType,
-							_newtonsoftJsonOptions.Value.SerializerSettings);
+					else {
+						result = DeserializeUsingSystemSerializer(bindingContext, valueAsString);
 					}
-					catch (JsonSerializationException e) {
-						bindingContext.ModelState.TryAddModelException(modelBindingKey, e);
-						return Task.CompletedTask;
-					}
-				}
-				else {
-					try {
-						result = JsonSerializer.Deserialize(valueAsString, bindingContext.ModelType);
-					}
-					catch (System.Text.Json.JsonException e) {
-						bindingContext.ModelState.TryAddModelException(modelBindingKey, e);
-						return Task.CompletedTask;
-					}
-				}
 
-				if (result != null) {
 					bindingContext.Result = ModelBindingResult.Success(result);
-					return Task.CompletedTask;
+				}
+				catch (Exception e) {
+					bindingContext.ModelState.AddModelError(modelBindingKey, e.Message);
 				}
 			}
 
 			return Task.CompletedTask;
+		}
+
+		private object DeserializeUsingSystemSerializer(ModelBindingContext bindingContext, string valueAsString) {
+			return JsonSerializer.Deserialize(valueAsString, bindingContext.ModelType,
+				_jsonOptions.Value.JsonSerializerOptions);
+		}
+
+		private object DeserializeUsingJsonNet(ModelBindingContext bindingContext, string valueAsString) {
+			return JsonConvert.DeserializeObject(valueAsString, bindingContext.ModelType,
+				_newtonsoftJsonOptions.Value.SerializerSettings);
 		}
 	}
 }
