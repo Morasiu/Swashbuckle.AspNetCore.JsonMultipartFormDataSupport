@@ -8,17 +8,13 @@
 	  <Description>Support JSON Multipart data in Swashbuckle </Description>
 	  <Authors>Morasiu</Authors>
 	  <PackageProjectUrl>https://github.com/Morasiu/Swashbuckle.AspNetCore.JsonMultipartFormDataSupport</PackageProjectUrl>
-	  <PackageReleaseNotes>## [1.6.0] - 2021-10-31
-### Added
-- Support for option `DescribeAllParametersInCamelCase()`
-
+	  <PackageReleaseNotes>## [1.6.1] - 2021-11-02
 ### Fixed
-- Now any json Serialization Exception is treated like model error instead of throwing HTTP 500 
-</PackageReleaseNotes>
+- Now binding returns 400 with Exception message</PackageReleaseNotes>
 	  <AssemblyVersion>0.0.0.0</AssemblyVersion>
 	  <FileVersion>0.0.0.0</FileVersion>
 	  <RepositoryType></RepositoryType>
-	  <PackageVersion>1.6.0</PackageVersion>
+	  <PackageVersion>1.6.1</PackageVersion>
 	  <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
