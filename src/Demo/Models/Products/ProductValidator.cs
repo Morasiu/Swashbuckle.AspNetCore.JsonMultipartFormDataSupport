@@ -2,8 +2,8 @@
 
 namespace Demo.Models.Products; 
 
-public class ProductValidation : AbstractValidator<Product> {
-	public ProductValidation() {
+public class ProductValidator : AbstractValidator<Product> {
+	public ProductValidator() {
 		RuleFor(a => a.Name).NotEmpty();
 	}
 }

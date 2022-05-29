@@ -37,7 +37,10 @@ namespace Demo {
 					options.SerializerSettings.Converters.Add(new StringEnumConverter());
 					options.SerializerSettings.Formatting = Formatting.Indented;
 				})
-				.AddFluentValidation(f => f.RegisterValidatorsFromAssemblyContaining<ProductValidation>());
+				.AddFluentValidation(f => {
+					f.RegisterValidatorsFromAssemblyContaining<ProductValidator>();
+					f.ImplicitlyValidateChildProperties = true;
+				});
 
 			services.AddJsonMultipartFormDataSupport(JsonSerializerChoice.Newtonsoft);
 			services.AddSwaggerExamplesFromAssemblyOf<ProductExamples>();
