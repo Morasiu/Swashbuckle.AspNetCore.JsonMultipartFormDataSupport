@@ -1,3 +1,5 @@
+using System.Globalization;
+using System.Threading;
 using Demo.Models;
 using Demo.Models.Products;
 using FluentValidation.AspNetCore;
@@ -33,14 +35,18 @@ namespace Demo {
 
 			// ===== JSON.Net- =====
 			services.AddControllers()
-				.AddNewtonsoftJson(options => {
-					options.SerializerSettings.Converters.Add(new StringEnumConverter());
-					options.SerializerSettings.Formatting = Formatting.Indented;
-				})
-				.AddFluentValidation(f => {
-					f.RegisterValidatorsFromAssemblyContaining<ProductValidator>();
-					f.ImplicitlyValidateChildProperties = true;
-				});
+			        .AddNewtonsoftJson(options => {
+				        options.SerializerSettings.Converters.Add(new StringEnumConverter());
+				        options.SerializerSettings.Formatting = Formatting.Indented;
+			        })
+			        .AddFluentValidation(f => {
+				        f.RegisterValidatorsFromAssemblyContaining<ProductValidator>();
+				        // Important! Without this it won't work automatically
+				        //  vvv
+				        f.ImplicitlyValidateChildProperties = true;
+				        
+				        f.LocalizationEnabled = false;
+			        });
 
 			services.AddJsonMultipartFormDataSupport(JsonSerializerChoice.Newtonsoft);
 			services.AddSwaggerExamplesFromAssemblyOf<ProductExamples>();
