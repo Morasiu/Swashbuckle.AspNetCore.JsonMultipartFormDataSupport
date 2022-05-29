@@ -1,4 +1,6 @@
 using Demo.Models;
+using Demo.Models.Products;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -33,7 +35,8 @@ namespace Demo {
 				.AddNewtonsoftJson(options => {
 					options.SerializerSettings.Converters.Add(new StringEnumConverter());
 					options.SerializerSettings.Formatting = Formatting.Indented;
-				});
+				})
+				.AddFluentValidation(f => f.RegisterValidatorsFromAssemblyContaining<ProductValidation>());
 
 			services.AddJsonMultipartFormDataSupport(JsonSerializerChoice.Newtonsoft);
 			services.AddSwaggerExamplesFromAssemblyOf<ProductExamples>();
