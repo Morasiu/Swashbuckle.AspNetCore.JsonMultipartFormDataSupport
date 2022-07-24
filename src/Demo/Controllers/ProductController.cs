@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using Demo.Models;
 using Demo.Models.Products;
 using Demo.Models.Wrapper;
 using Microsoft.AspNetCore.Mvc;

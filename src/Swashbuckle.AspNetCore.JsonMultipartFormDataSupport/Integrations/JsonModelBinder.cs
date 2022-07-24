@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -61,7 +62,7 @@ namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Integrations {
 					bindingContext.Result = ModelBindingResult.Success(result);
 				}
 				catch (Exception e) {
-					bindingContext.ModelState.AddModelError(modelBindingKey, e.Message);
+					bindingContext.ModelState.AddModelError(modelBindingKey ?? string.Empty, e.Message);
 				}
 			}
 
@@ -70,7 +71,7 @@ namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Integrations {
 
 		private object DeserializeUsingSystemSerializer(ModelBindingContext bindingContext, string valueAsString) {
 			return JsonSerializer.Deserialize(valueAsString, bindingContext.ModelType,
-				_jsonOptions.Value.JsonSerializerOptions);
+				_jsonOptions?.Value?.JsonSerializerOptions ?? new JsonSerializerOptions());
 		}
 
 		private object DeserializeUsingJsonNet(ModelBindingContext bindingContext, string valueAsString) {
