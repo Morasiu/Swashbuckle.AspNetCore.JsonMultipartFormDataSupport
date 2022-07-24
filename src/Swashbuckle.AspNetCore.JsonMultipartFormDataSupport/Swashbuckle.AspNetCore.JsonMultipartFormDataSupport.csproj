@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	  <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	  <PackageTags>Swashbuckle</PackageTags>
 	  <RepositoryUrl>https://github.com/Morasiu/Swashbuckle.AspNetCore.JsonMultipartFormDataSupport</RepositoryUrl>
 	  <PackageLicenseFile>LICENSE</PackageLicenseFile>
