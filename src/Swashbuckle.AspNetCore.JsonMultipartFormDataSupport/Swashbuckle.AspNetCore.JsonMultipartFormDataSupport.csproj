@@ -11,8 +11,8 @@
 	  <PackageReleaseNotes>See CHANGELOG on Github</PackageReleaseNotes>
 	  <AssemblyVersion>0.0.0.0</AssemblyVersion>
 	  <FileVersion>0.0.0.0</FileVersion>
-	  <RepositoryType></RepositoryType>
-	  <PackageVersion>1.7.0</PackageVersion>
+	  <RepositoryType>git</RepositoryType>
+	  <PackageVersion>1.7.1</PackageVersion>
 	  <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
@@ -33,6 +33,12 @@
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\..\CHANGELOG.md">
+      <Link>CHANGELOG.md</Link>
+    </Content>
   </ItemGroup>
 
 </Project>
