@@ -32,8 +32,9 @@ namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Integrations {
 
 			// Do not use this provider if the binding target is not a property
 			var propName = context.Metadata.PropertyName;
+			if (propName is null) return null;
 			var propInfo = context.Metadata.ContainerType?.GetProperty(propName);
-			if (propName == null || propInfo == null) return null;
+			if (propInfo == null) return null;
 
 			// Do not use this provider if the target property type implements IFormFile
 			if (propInfo.PropertyType.IsAssignableFrom(typeof(IFormFile))) return null;

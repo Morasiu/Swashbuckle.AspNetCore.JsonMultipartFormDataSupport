@@ -1,6 +1,3 @@
-using System.Globalization;
-using System.Threading;
-using Demo.Models;
 using Demo.Models.Products;
 using FluentValidation.AspNetCore;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;

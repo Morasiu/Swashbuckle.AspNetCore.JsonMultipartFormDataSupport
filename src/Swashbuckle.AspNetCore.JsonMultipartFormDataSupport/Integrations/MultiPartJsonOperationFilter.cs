@@ -62,6 +62,7 @@ namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Integrations {
 							AddEncoding(mediaType, propertyInfo);
 
 							var openApiSchema = GetSchema(context, propertyInfo);
+							if (openApiSchema is null) continue;
 							schemaProperties.Add(property.Key, openApiSchema);
 						}
 						else {
@@ -79,12 +80,12 @@ namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Integrations {
 		/// Generate schema for propertyInfo
 		/// </summary>
 		/// <returns></returns>
-		private OpenApiSchema GetSchema(OperationFilterContext context, PropertyInfo propertyInfo) {
+		private OpenApiSchema? GetSchema(OperationFilterContext context, PropertyInfo propertyInfo) {
 			bool present =
 				context.SchemaRepository.TryLookupByType(propertyInfo.PropertyType, out OpenApiSchema openApiSchema);
 			if (!present) {
 				_ = context.SchemaGenerator.GenerateSchema(propertyInfo.PropertyType, context.SchemaRepository);
-				_ = context.SchemaRepository.TryLookupByType(propertyInfo.PropertyType, out openApiSchema);
+				if (!context.SchemaRepository.TryLookupByType(propertyInfo.PropertyType, out openApiSchema)) return null;
 				var schema = context.SchemaRepository.Schemas[openApiSchema.Reference.Id];
 				AddDescription(schema, openApiSchema.Title);
 				AddExample(propertyInfo, schema);
