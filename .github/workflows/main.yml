@@ -23,6 +23,6 @@ jobs:
       
       # Publish
       - name: Package
-        run: dotnet pack -c Release -o . src/Swashbuckle.AspNetCore.JsonMultipartFormDataSupport/Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.csproj
+        run: dotnet pack ./src/Swashbuckle.AspNetCore.JsonMultipartFormDataSupport/Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.csproj -o .
       - name: Publish
         run: dotnet nuget push *.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.jso
