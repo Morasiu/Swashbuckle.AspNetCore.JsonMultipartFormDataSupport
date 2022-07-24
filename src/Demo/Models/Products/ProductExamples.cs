@@ -1,7 +1,7 @@
 ﻿using System;
 using Swashbuckle.AspNetCore.Filters;
 
-namespace Demo.Models {
+namespace Demo.Models.Products {
 	public class ProductExamples : IExamplesProvider<Product> {
 		public Product GetExamples() {
 			var product = new Product {

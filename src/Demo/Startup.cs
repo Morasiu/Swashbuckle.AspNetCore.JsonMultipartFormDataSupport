@@ -1,4 +1,6 @@
-using Demo.Models;
+using Demo.Models.Products;
+using FluentValidation.AspNetCore;
+using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -30,10 +32,18 @@ namespace Demo {
 
 			// ===== JSON.Net- =====
 			services.AddControllers()
-				.AddNewtonsoftJson(options => {
-					options.SerializerSettings.Converters.Add(new StringEnumConverter());
-					options.SerializerSettings.Formatting = Formatting.Indented;
-				});
+			        .AddNewtonsoftJson(options => {
+				        options.SerializerSettings.Converters.Add(new StringEnumConverter());
+				        options.SerializerSettings.Formatting = Formatting.Indented;
+			        })
+			        .AddFluentValidation(f => {
+				        f.RegisterValidatorsFromAssemblyContaining<ProductValidator>();
+				        // Important! Without this it won't work automatically
+				        //  vvv
+				        f.ImplicitlyValidateChildProperties = true;
+				        
+				        f.LocalizationEnabled = false;
+			        });
 
 			services.AddJsonMultipartFormDataSupport(JsonSerializerChoice.Newtonsoft);
 			services.AddSwaggerExamplesFromAssemblyOf<ProductExamples>();
@@ -43,6 +53,7 @@ namespace Demo {
 					Version = "v1"
 				});
 			});
+			services.AddFluentValidationRulesToSwagger();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
