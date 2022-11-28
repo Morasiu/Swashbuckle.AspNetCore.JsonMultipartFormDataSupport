@@ -78,17 +78,14 @@ namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Integrations {
 				_newtonsoftJsonOptions.Value.SerializerSettings);
 		}
 
-        private async Task<ValueProviderResult> GetValueProvidedResult(ModelBindingContext bindingContext)
-        {
+        private async Task<ValueProviderResult> GetValueProvidedResult(ModelBindingContext bindingContext) {
             var valueProviderResult = bindingContext.ValueProvider.GetValue(bindingContext.ModelName);
-            if (valueProviderResult != ValueProviderResult.None)
-            {
+            if (valueProviderResult != ValueProviderResult.None) {
                 return valueProviderResult;
             }
 
             var file = bindingContext.HttpContext.Request.Form.Files.GetFile(bindingContext.ModelName);
-            if (file is null)
-            {
+            if (file is null) {
                 return valueProviderResult;
             }
 
