@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -26,7 +27,7 @@ namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Integrations {
 		}
 
 		/// <inheritdoc />
-		public Task BindModelAsync(ModelBindingContext bindingContext) {
+		public async Task BindModelAsync(ModelBindingContext bindingContext) {
 			if (bindingContext == null) {
 				throw new ArgumentNullException(nameof(bindingContext));
 			}
@@ -40,7 +41,7 @@ namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Integrations {
 			}
 
 			// Check the value sent in
-			var valueProviderResult = bindingContext.ValueProvider.GetValue(bindingContext.ModelName);
+			var valueProviderResult = await this.GetValueProvidedResult(bindingContext);
 			if (valueProviderResult != ValueProviderResult.None) {
 				bindingContext.ModelState.SetModelValue(bindingContext.ModelName, valueProviderResult);
 
@@ -65,9 +66,7 @@ namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Integrations {
 					bindingContext.ModelState.AddModelError(modelBindingKey ?? string.Empty, e.Message);
 				}
 			}
-
-			return Task.CompletedTask;
-		}
+        }
 
 		private object DeserializeUsingSystemSerializer(ModelBindingContext bindingContext, string valueAsString) {
 			return JsonSerializer.Deserialize(valueAsString, bindingContext.ModelType,
@@ -78,5 +77,27 @@ namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Integrations {
 			return JsonConvert.DeserializeObject(valueAsString, bindingContext.ModelType,
 				_newtonsoftJsonOptions.Value.SerializerSettings);
 		}
-	}
+
+        private async Task<ValueProviderResult> GetValueProvidedResult(ModelBindingContext bindingContext)
+        {
+            var valueProviderResult = bindingContext.ValueProvider.GetValue(bindingContext.ModelName);
+            if (valueProviderResult != ValueProviderResult.None)
+            {
+                return valueProviderResult;
+            }
+
+            var file = bindingContext.HttpContext.Request.Form.Files.GetFile(bindingContext.ModelName);
+            if (file is null)
+            {
+                return valueProviderResult;
+            }
+
+            await using var stream = file.OpenReadStream();
+            using var reader = new StreamReader(stream);
+            var json = await reader.ReadToEndAsync();
+            valueProviderResult = new ValueProviderResult(json);
+
+            return valueProviderResult;
+        }
+    }
 }
