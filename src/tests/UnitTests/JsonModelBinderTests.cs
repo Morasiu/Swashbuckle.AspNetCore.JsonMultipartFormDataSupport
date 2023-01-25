@@ -14,9 +14,9 @@ public class JsonModelBinderTests {
 		// Arrange
 		var sut = new JsonModelBinder();
 		// Act
-		Action action = () =>  sut.BindModelAsync(null);
+		var action = async () => await sut.BindModelAsync(null);
 		// Assert
-		action.Should().ThrowExactly<ArgumentNullException>();
+		action.Should().ThrowExactlyAsync<ArgumentNullException>();
 	}
 	
 	[Test]
