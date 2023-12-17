@@ -40,10 +40,7 @@ namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Integrations {
 		public void Apply(OpenApiOperation operation, OperationFilterContext context) {
 			var descriptors = context.ApiDescription.ActionDescriptor.Parameters.ToList();
 			foreach (var descriptor in descriptors) {
-				// Support for DescribeAllParametersInCamelCase
-				descriptor.Name = _generatorOptions.Value.DescribeAllParametersInCamelCase
-					? descriptor.Name.ToCamelCase()
-					: descriptor.Name;
+				descriptor.Name = GetParameterName(descriptor.Name);
 
 				// Get property with [FromJson]
 				var propertyInfo = GetPropertyInfo(descriptor);
@@ -57,8 +54,10 @@ namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Integrations {
 
 					var schemaProperties = new Dictionary<string, OpenApiSchema>();
 
+					var propertyInfoName = GetParameterName(propertyInfo.Name);
+
 					foreach (var property in groupedProperties) {
-						if (property.Key == propertyInfo.Name) {
+						if (property.Key == propertyInfoName) {
 							AddEncoding(mediaType, propertyInfo);
 
 							var openApiSchema = GetSchema(context, propertyInfo);
@@ -74,6 +73,14 @@ namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Integrations {
 					mediaType.Schema.Properties = schemaProperties;
 				}
 			}
+		}
+
+		private string GetParameterName(string name)
+		{
+			// Support for DescribeAllParametersInCamelCase
+			return _generatorOptions.Value.DescribeAllParametersInCamelCase
+				? name.ToCamelCase()
+				: name;
 		}
 
 		/// <summary>
