@@ -13,7 +13,7 @@
 	  <RepositoryType>git</RepositoryType>
 	  <PackageVersion>1.9.0</PackageVersion>
 	  <TargetFramework>net6.0</TargetFramework>
-	  <IsPackable>false</IsPackable>
+	  <IsPackable>true</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>

@@ -4,78 +4,84 @@
         <name>Swashbuckle.AspNetCore.JsonMultipartFormDataSupport</name>
     </assembly>
     <members>
-        <member name="T:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.FormDataJsonBinderProvider">
-            <summary>
-            Looks for field with <see cref="T:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.FromJsonAttribute"/> and use <see cref="T:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.JsonModelBinder"/> for binder.
-            </summary>
-        </member>
-        <member name="M:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.FormDataJsonBinderProvider.GetBinder(Microsoft.AspNetCore.Mvc.ModelBinding.ModelBinderProviderContext)">
-            <inheritdoc />
-        </member>
-        <member name="T:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.FromJsonAttribute">
+        <member name="T:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Attributes.FromJsonAttribute">
             <summary>
             Suggest that this form file should be deserialized from JSON.
             </summary>
         </member>
-        <member name="T:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.JsonModelBinder">
+        <member name="T:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Extensions.MultipartFromDataServicesExtension">
+            <summary>
+            Extensions for ASP.Net Core IServiceCollection
+            </summary>
+        </member>
+        <member name="M:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Extensions.MultipartFromDataServicesExtension.AddJsonMultipartFormDataSupport(Microsoft.Extensions.DependencyInjection.IServiceCollection,Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Integrations.JsonSerializerChoice)">
+            <summary>
+            Adds support for json in multipart/form-data requests
+            </summary>
+        </member>
+        <member name="T:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Integrations.FormDataJsonBinderProvider">
+            <summary>
+            Looks for field with <see cref="T:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Attributes.FromJsonAttribute"/> and use <see cref="T:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Integrations.JsonModelBinder"/> for binder.
+            </summary>
+        </member>
+        <member name="M:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Integrations.FormDataJsonBinderProvider.GetBinder(Microsoft.AspNetCore.Mvc.ModelBinding.ModelBinderProviderContext)">
+            <inheritdoc />
+        </member>
+        <member name="T:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Integrations.JsonModelBinder">
             <summary>
             Binds field from JSON string.
             </summary>
         </member>
-        <member name="M:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.JsonModelBinder.BindModelAsync(Microsoft.AspNetCore.Mvc.ModelBinding.ModelBindingContext)">
+        <member name="M:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Integrations.JsonModelBinder.BindModelAsync(Microsoft.AspNetCore.Mvc.ModelBinding.ModelBindingContext)">
             <inheritdoc />
         </member>
-        <member name="T:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.MultipartFormData`1">
+        <member name="T:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Integrations.MultiPartJsonOperationFilter">
+            <summary>
+            Aggregates form fields in Swagger to one JSON field and add example.
+            </summary>
+        </member>
+        <member name="M:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Integrations.MultiPartJsonOperationFilter.#ctor(System.IServiceProvider,Microsoft.Extensions.Options.IOptions{Microsoft.AspNetCore.Mvc.JsonOptions},Microsoft.Extensions.Options.IOptions{Microsoft.AspNetCore.Mvc.MvcNewtonsoftJsonOptions},Microsoft.Extensions.Options.IOptions{Swashbuckle.AspNetCore.SwaggerGen.SwaggerGeneratorOptions})">
+            <summary>
+            Creates <see cref="T:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Integrations.MultiPartJsonOperationFilter"/>
+            </summary>
+        </member>
+        <member name="M:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Integrations.MultiPartJsonOperationFilter.Apply(Microsoft.OpenApi.Models.OpenApiOperation,Swashbuckle.AspNetCore.SwaggerGen.OperationFilterContext)">
+            <inheritdoc />
+        </member>
+        <member name="M:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Integrations.MultiPartJsonOperationFilter.GetSchema(Swashbuckle.AspNetCore.SwaggerGen.OperationFilterContext,System.Reflection.PropertyInfo)">
+            <summary>
+            Generate schema for propertyInfo
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Models.MultipartFormData`1">
             <summary>
             Wrapper for sending json with image in multipart/form-data
             </summary>
             <typeparam name="TJsonPart"></typeparam>
         </member>
-        <member name="P:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.MultipartFormData`1.Json">
+        <member name="P:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Models.MultipartFormData`1.Json">
             <summary>
             Object of type <typeparamref name="TJsonPart"/> mapped from JSON.
             </summary>
         </member>
-        <member name="P:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.MultipartFormData`1.File">
+        <member name="P:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Models.MultipartFormData`1.File">
             <summary>
             IFormFile form multipart/form-data
             </summary>
         </member>
-        <member name="T:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.MultipartFromDataServicesExtension">
-            <summary>
-            Extensions for ASP.Net Core IServiceCollection
-            </summary>
-        </member>
-        <member name="M:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.MultipartFromDataServicesExtension.AddJsonMultipartFormDataSupport(Microsoft.Extensions.DependencyInjection.IServiceCollection,Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.JsonSerializerChoice)">
-            <summary>
-            Adds support for json in multipart/form-data requests
-            </summary>
-        </member>
-        <member name="T:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.MultiPartJsonOperationFilter">
-            <summary>
-            Aggregates form fields in Swagger to one JSON field and add example.
-            </summary>
-        </member>
-        <member name="M:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.MultiPartJsonOperationFilter.#ctor(System.IServiceProvider,Microsoft.Extensions.Options.IOptions{Microsoft.AspNetCore.Mvc.JsonOptions},Microsoft.Extensions.Options.IOptions{Microsoft.AspNetCore.Mvc.MvcNewtonsoftJsonOptions})">
-            <summary>
-            Creates <see cref="T:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.MultiPartJsonOperationFilter"/>
-            </summary>
-        </member>
-        <member name="M:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.MultiPartJsonOperationFilter.Apply(Microsoft.OpenApi.Models.OpenApiOperation,Swashbuckle.AspNetCore.SwaggerGen.OperationFilterContext)">
-            <inheritdoc />
-        </member>
-        <member name="T:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.MultipartRequiredFormData`1">
+        <member name="T:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Models.MultipartRequiredFormData`1">
             <summary>
             Wrapper for sending json with REQUIRED image in multipart/form-data.
             </summary>
             <typeparam name="TJsonPart"></typeparam>
         </member>
-        <member name="P:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.MultipartRequiredFormData`1.Json">
+        <member name="P:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Models.MultipartRequiredFormData`1.Json">
             <summary>
             Object of type <typeparamref name="TJsonPart"/> mapped from JSON.
             </summary>
         </member>
-        <member name="P:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.MultipartRequiredFormData`1.File">
+        <member name="P:Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Models.MultipartRequiredFormData`1.File">
             <summary>
             IFormFile form multipart/form-data
             </summary>
