@@ -60,5 +60,23 @@ namespace Demo.Controllers {
 				images = images?.Select(a => a.FileName)
 			});
 		}
-	}
+
+        [HttpPost("wrapper/complex-data")]
+        public IActionResult PostDataWrapper([FromForm] ComplexProductWithDataWrapper wrapper)
+        {
+            var productName = wrapper.ProductName;
+            var productId = wrapper.ProductId ?? throw new NullReferenceException(nameof(wrapper.ProductId));
+            var product = wrapper.Product;
+            var images = wrapper.Files;
+            var data = wrapper.ProductData;
+            return Ok(new
+            {
+                productName,
+                productId,
+                product = JsonConvert.SerializeObject(product),
+                images = images?.Select(a => a.FileName),
+                data = JsonConvert.SerializeObject(data)
+            });
+        }
+    }
 }
