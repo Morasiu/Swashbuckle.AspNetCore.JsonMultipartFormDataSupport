@@ -14,135 +14,160 @@ using Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Extensions;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
-namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Integrations {
-	/// <summary>
-	/// Aggregates form fields in Swagger to one JSON field and add example.
-	/// </summary>
-	public class MultiPartJsonOperationFilter : IOperationFilter {
-		private readonly IServiceProvider _serviceProvider;
-		private readonly IOptions<JsonOptions> _jsonOptions;
-		private readonly IOptions<MvcNewtonsoftJsonOptions> _newtonsoftJsonOption;
-		private readonly IOptions<SwaggerGeneratorOptions> _generatorOptions;
+namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Integrations
+{
+    /// <summary>
+    /// Aggregates form fields in Swagger to one JSON field and add example.
+    /// </summary>
+    public class MultiPartJsonOperationFilter : IOperationFilter
+    {
+        private readonly IServiceProvider _serviceProvider;
+        private readonly IOptions<JsonOptions> _jsonOptions;
+        private readonly IOptions<MvcNewtonsoftJsonOptions> _newtonsoftJsonOption;
+        private readonly IOptions<SwaggerGeneratorOptions> _generatorOptions;
 
-		/// <summary>
-		/// Creates <see cref="MultiPartJsonOperationFilter"/>
-		/// </summary>
-		public MultiPartJsonOperationFilter(IServiceProvider serviceProvider, IOptions<JsonOptions> jsonOptions,
-		                                    IOptions<MvcNewtonsoftJsonOptions> newtonsoftJsonOption,
-		                                    IOptions<SwaggerGeneratorOptions> generatorOptions) {
-			_serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
-			_jsonOptions = jsonOptions;
-			_newtonsoftJsonOption = newtonsoftJsonOption;
-			_generatorOptions = generatorOptions;
-		}
+        /// <summary>
+        /// Creates <see cref="MultiPartJsonOperationFilter"/>
+        /// </summary>
+        public MultiPartJsonOperationFilter(IServiceProvider serviceProvider, IOptions<JsonOptions> jsonOptions,
+                                            IOptions<MvcNewtonsoftJsonOptions> newtonsoftJsonOption,
+                                            IOptions<SwaggerGeneratorOptions> generatorOptions)
+        {
+            _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+            _jsonOptions = jsonOptions;
+            _newtonsoftJsonOption = newtonsoftJsonOption;
+            _generatorOptions = generatorOptions;
+        }
 
-		/// <inheritdoc />
-		public void Apply(OpenApiOperation operation, OperationFilterContext context) {
-			var descriptors = context.ApiDescription.ActionDescriptor.Parameters.ToList();
-			foreach (var descriptor in descriptors) {
-				descriptor.Name = GetParameterName(descriptor.Name);
+        /// <inheritdoc />
+        public void Apply(OpenApiOperation operation, OperationFilterContext context)
+        {
+            var descriptors = context.ApiDescription.ActionDescriptor.Parameters.ToList();
+            foreach (var descriptor in descriptors) {
+                descriptor.Name = GetParameterName(descriptor.Name);
 
-				// Get property with [FromJson]
-				var propertyInfo = GetPropertyInfo(descriptor);
+                var mediaType = operation.RequestBody.Content.First().Value;
+                HandleFromJsonAttribute(mediaType, context, descriptor);
+            }
+        }
 
-				if (propertyInfo != null) {
-					var mediaType = operation.RequestBody.Content.First().Value;
+        private void HandleFromJsonAttribute(OpenApiMediaType mediaType, OperationFilterContext context,
+                                             ParameterDescriptor descriptor) {
+            // Get property with [FromJson]
+            foreach (var propertyInfo in GetPropertyWithFromJson(descriptor)) {
+                    
+                if (propertyInfo == null) continue;
 
-					// Group all exploded properties.
-					var groupedProperties = mediaType.Schema.Properties
-					                                 .GroupBy(pair => pair.Key.Split('.')[0]);
+                var schemaProperties = GetSchemaProperties(context, mediaType, propertyInfo);
 
-					var schemaProperties = new Dictionary<string, OpenApiSchema>();
+                // Override schema properties
+                mediaType.Schema.Properties = schemaProperties;
+            }
+        }
 
-					var propertyInfoName = GetParameterName(propertyInfo.Name);
+        private Dictionary<string, OpenApiSchema> GetSchemaProperties(OperationFilterContext context, OpenApiMediaType mediaType,
+                                                                      PropertyInfo propertyInfo) {
+            // Group all exploded properties.
+            var allProperties = mediaType.Schema.Properties
+                                             .GroupBy(pair => pair.Key.Split('.')[0]);
 
-					foreach (var property in groupedProperties) {
-						if (property.Key == propertyInfoName) {
-							AddEncoding(mediaType, propertyInfo);
+            var schemaProperties = new Dictionary<string, OpenApiSchema>();
 
-							var openApiSchema = GetSchema(context, propertyInfo);
-							if (openApiSchema is null) continue;
-							schemaProperties.Add(property.Key, openApiSchema);
-						}
-						else {
-							schemaProperties.Add(property.Key, property.First().Value);
-						}
-					}
+            var propertyInfoName = GetParameterName(propertyInfo.Name);
 
-					// Override schema properties
-					mediaType.Schema.Properties = schemaProperties;
-				}
-			}
-		}
+            foreach (var property in allProperties)
+            {
+                if (property.Key == propertyInfoName)
+                {
+                    AddEncoding(mediaType, propertyInfo);
 
-		private string GetParameterName(string name)
-		{
-			// Support for DescribeAllParametersInCamelCase
-			return _generatorOptions.Value.DescribeAllParametersInCamelCase
-				? name.ToCamelCase()
-				: name;
-		}
+                    var openApiSchema = GetSchema(context, propertyInfo);
+                    if (openApiSchema is null) continue;
+                    schemaProperties.Add(property.Key, openApiSchema);
+                }
+                else
+                {
+                    schemaProperties.Add(property.Key, property.First().Value);
+                }
+            }
 
-		/// <summary>
-		/// Generate schema for propertyInfo
-		/// </summary>
-		/// <returns></returns>
-		private OpenApiSchema? GetSchema(OperationFilterContext context, PropertyInfo propertyInfo) {
-			bool present =
-				context.SchemaRepository.TryLookupByType(propertyInfo.PropertyType, out OpenApiSchema openApiSchema);
-			if (!present) {
-				_ = context.SchemaGenerator.GenerateSchema(propertyInfo.PropertyType, context.SchemaRepository);
-				if (!context.SchemaRepository.TryLookupByType(propertyInfo.PropertyType, out openApiSchema)) return null;
-				var schema = context.SchemaRepository.Schemas[openApiSchema.Reference.Id];
-				AddDescription(schema, openApiSchema.Title);
-				AddExample(propertyInfo, schema);
-			}
+            return schemaProperties;
+        }
 
-			return context.SchemaRepository.Schemas[openApiSchema.Reference.Id];
-		}
+        private string GetParameterName(string name)
+        {
+            // Support for DescribeAllParametersInCamelCase
+            return _generatorOptions.Value.DescribeAllParametersInCamelCase
+                ? name.ToCamelCase()
+                : name;
+        }
 
-		private static void AddDescription(OpenApiSchema openApiSchema, string schemaDisplayName) {
-			openApiSchema.Description += $"\n See {schemaDisplayName} model.";
-		}
+        /// <summary>
+        /// Generate schema for propertyInfo
+        /// </summary>
+        /// <returns></returns>
+        private OpenApiSchema GetSchema(OperationFilterContext context, PropertyInfo propertyInfo)
+        {
+            var present =
+                context.SchemaRepository.TryLookupByType(propertyInfo.PropertyType, out OpenApiSchema openApiSchema);
+            
+            if (present) return context.SchemaRepository.Schemas[openApiSchema.Reference.Id];
+            
+            _ = context.SchemaGenerator.GenerateSchema(propertyInfo.PropertyType, context.SchemaRepository);
+            if (!context.SchemaRepository.TryLookupByType(propertyInfo.PropertyType, out openApiSchema)) return null;
+            var schema = context.SchemaRepository.Schemas[openApiSchema.Reference.Id];
+            AddDescription(schema, openApiSchema.Title);
+            AddExample(propertyInfo, schema);
 
-		private static void AddEncoding(OpenApiMediaType mediaType, PropertyInfo propertyInfo) {
-			mediaType.Encoding = mediaType.Encoding
-			                              .Where(pair => !pair.Key.ToLower().Contains(propertyInfo.Name.ToLower()))
-			                              .ToDictionary(pair => pair.Key, pair => pair.Value);
-			mediaType.Encoding.Add(propertyInfo.Name, new OpenApiEncoding() {
-				ContentType = "application/json",
-				Explode = false
-			});
-		}
+            return context.SchemaRepository.Schemas[openApiSchema.Reference.Id];
+        }
 
-		private void AddExample(PropertyInfo propertyInfo, OpenApiSchema openApiSchema) {
-			var example = GetExampleFor(propertyInfo.PropertyType);
-			// Example do not exist. Use default.
-			if (example == null) return;
-			string json;
+        private static void AddDescription(OpenApiSchema openApiSchema, string schemaDisplayName)
+        {
+            openApiSchema.Description += $"\n See {schemaDisplayName} model.";
+        }
 
-			if (JsonMultipartFormDataOptions.JsonSerializerChoice == JsonSerializerChoice.SystemText)
-				json = JsonSerializer.Serialize(example, _jsonOptions.Value.JsonSerializerOptions);
-			else if (JsonMultipartFormDataOptions.JsonSerializerChoice == JsonSerializerChoice.Newtonsoft)
-				json = JsonConvert.SerializeObject(example, _newtonsoftJsonOption.Value.SerializerSettings);
-			else
-				json = JsonSerializer.Serialize(example);
-			openApiSchema.Example = new OpenApiString(json);
-		}
+        private static void AddEncoding(OpenApiMediaType mediaType, PropertyInfo propertyInfo)
+        {
+            mediaType.Encoding = mediaType.Encoding
+                                          .Where(pair => !pair.Key.ToLower().Contains(propertyInfo.Name.ToLower()))
+                                          .ToDictionary(pair => pair.Key, pair => pair.Value);
+            mediaType.Encoding.Add(propertyInfo.Name, new OpenApiEncoding {
+                ContentType = "application/json",
+                Explode = false
+            });
+        }
 
-		private object GetExampleFor(Type parameterType) {
-			var makeGenericType = typeof(IExamplesProvider<>).MakeGenericType(parameterType);
-			var method = makeGenericType.GetMethod("GetExamples");
-			var exampleProvider = _serviceProvider.GetService(makeGenericType);
-			// Example do not exist. Use default.
-			if (exampleProvider == null)
-				return null;
-			var example = method?.Invoke(exampleProvider, null);
-			return example;
-		}
+        private void AddExample(PropertyInfo propertyInfo, OpenApiSchema openApiSchema)
+        {
+            var example = GetExampleFor(propertyInfo.PropertyType);
+            // Example do not exist. Use default.
+            if (example == null) return;
+            string json;
 
-		private static PropertyInfo GetPropertyInfo(ParameterDescriptor descriptor) =>
-			descriptor.ParameterType.GetProperties()
-			          .SingleOrDefault(f => f.GetCustomAttribute<FromJsonAttribute>() != null);
-	}
+            if (JsonMultipartFormDataOptions.JsonSerializerChoice == JsonSerializerChoice.SystemText)
+                json = JsonSerializer.Serialize(example, _jsonOptions.Value.JsonSerializerOptions);
+            else if (JsonMultipartFormDataOptions.JsonSerializerChoice == JsonSerializerChoice.Newtonsoft)
+                json = JsonConvert.SerializeObject(example, _newtonsoftJsonOption.Value.SerializerSettings);
+            else
+                json = JsonSerializer.Serialize(example);
+            openApiSchema.Example = new OpenApiString(json);
+        }
+
+        private object GetExampleFor(Type parameterType)
+        {
+            var makeGenericType = typeof(IExamplesProvider<>).MakeGenericType(parameterType);
+            var method = makeGenericType.GetMethod("GetExamples");
+            var exampleProvider = _serviceProvider.GetService(makeGenericType);
+            // Example do not exist. Use default.
+            if (exampleProvider == null)
+                return null;
+            var example = method?.Invoke(exampleProvider, null);
+            return example;
+        }
+
+        private static List<PropertyInfo> GetPropertyWithFromJson(ParameterDescriptor descriptor) =>
+            descriptor.ParameterType.GetProperties()
+                .Where(f => f.GetCustomAttribute<FromJsonAttribute>() != null).ToList();
+    }
 }
