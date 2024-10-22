@@ -43,46 +43,55 @@ namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Integrations
         public void Apply(OpenApiOperation operation, OperationFilterContext context)
         {
             var descriptors = context.ApiDescription.ActionDescriptor.Parameters.ToList();
-            foreach (var descriptor in descriptors)
-            {
+            foreach (var descriptor in descriptors) {
                 descriptor.Name = GetParameterName(descriptor.Name);
 
-                // Get property with [FromJson]
-                foreach (var propertyInfo in GetPropertyInfo(descriptor))
+                var mediaType = operation.RequestBody.Content.First().Value;
+                HandleFromJsonAttribute(mediaType, context, descriptor);
+            }
+        }
+
+        private void HandleFromJsonAttribute(OpenApiMediaType mediaType, OperationFilterContext context,
+                                             ParameterDescriptor descriptor) {
+            // Get property with [FromJson]
+            foreach (var propertyInfo in GetPropertyWithFromJson(descriptor)) {
+                    
+                if (propertyInfo == null) continue;
+
+                var schemaProperties = GetSchemaProperties(context, mediaType, propertyInfo);
+
+                // Override schema properties
+                mediaType.Schema.Properties = schemaProperties;
+            }
+        }
+
+        private Dictionary<string, OpenApiSchema> GetSchemaProperties(OperationFilterContext context, OpenApiMediaType mediaType,
+                                                                      PropertyInfo propertyInfo) {
+            // Group all exploded properties.
+            var allProperties = mediaType.Schema.Properties
+                                             .GroupBy(pair => pair.Key.Split('.')[0]);
+
+            var schemaProperties = new Dictionary<string, OpenApiSchema>();
+
+            var propertyInfoName = GetParameterName(propertyInfo.Name);
+
+            foreach (var property in allProperties)
+            {
+                if (property.Key == propertyInfoName)
                 {
-                    if (propertyInfo != null)
-                    {
-                        var mediaType = operation.RequestBody.Content.First().Value;
+                    AddEncoding(mediaType, propertyInfo);
 
-                        // Group all exploded properties.
-                        var groupedProperties = mediaType.Schema.Properties
-                            .GroupBy(pair => pair.Key.Split('.')[0]);
-
-                        var schemaProperties = new Dictionary<string, OpenApiSchema>();
-
-                        var propertyInfoName = GetParameterName(propertyInfo.Name);
-
-                        foreach (var property in groupedProperties)
-                        {
-                            if (property.Key == propertyInfoName)
-                            {
-                                AddEncoding(mediaType, propertyInfo);
-
-                                var openApiSchema = GetSchema(context, propertyInfo);
-                                if (openApiSchema is null) continue;
-                                schemaProperties.Add(property.Key, openApiSchema);
-                            }
-                            else
-                            {
-                                schemaProperties.Add(property.Key, property.First().Value);
-                            }
-                        }
-
-                        // Override schema properties
-                        mediaType.Schema.Properties = schemaProperties;
-                    }
+                    var openApiSchema = GetSchema(context, propertyInfo);
+                    if (openApiSchema is null) continue;
+                    schemaProperties.Add(property.Key, openApiSchema);
+                }
+                else
+                {
+                    schemaProperties.Add(property.Key, property.First().Value);
                 }
             }
+
+            return schemaProperties;
         }
 
         private string GetParameterName(string name)
@@ -99,16 +108,16 @@ namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Integrations
         /// <returns></returns>
         private OpenApiSchema GetSchema(OperationFilterContext context, PropertyInfo propertyInfo)
         {
-            bool present =
+            var present =
                 context.SchemaRepository.TryLookupByType(propertyInfo.PropertyType, out OpenApiSchema openApiSchema);
-            if (!present)
-            {
-                _ = context.SchemaGenerator.GenerateSchema(propertyInfo.PropertyType, context.SchemaRepository);
-                if (!context.SchemaRepository.TryLookupByType(propertyInfo.PropertyType, out openApiSchema)) return null;
-                var schema = context.SchemaRepository.Schemas[openApiSchema.Reference.Id];
-                AddDescription(schema, openApiSchema.Title);
-                AddExample(propertyInfo, schema);
-            }
+            
+            if (present) return context.SchemaRepository.Schemas[openApiSchema.Reference.Id];
+            
+            _ = context.SchemaGenerator.GenerateSchema(propertyInfo.PropertyType, context.SchemaRepository);
+            if (!context.SchemaRepository.TryLookupByType(propertyInfo.PropertyType, out openApiSchema)) return null;
+            var schema = context.SchemaRepository.Schemas[openApiSchema.Reference.Id];
+            AddDescription(schema, openApiSchema.Title);
+            AddExample(propertyInfo, schema);
 
             return context.SchemaRepository.Schemas[openApiSchema.Reference.Id];
         }
@@ -123,8 +132,7 @@ namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Integrations
             mediaType.Encoding = mediaType.Encoding
                                           .Where(pair => !pair.Key.ToLower().Contains(propertyInfo.Name.ToLower()))
                                           .ToDictionary(pair => pair.Key, pair => pair.Value);
-            mediaType.Encoding.Add(propertyInfo.Name, new OpenApiEncoding()
-            {
+            mediaType.Encoding.Add(propertyInfo.Name, new OpenApiEncoding {
                 ContentType = "application/json",
                 Explode = false
             });
@@ -158,7 +166,7 @@ namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Integrations
             return example;
         }
 
-        private static List<PropertyInfo> GetPropertyInfo(ParameterDescriptor descriptor) =>
+        private static List<PropertyInfo> GetPropertyWithFromJson(ParameterDescriptor descriptor) =>
             descriptor.ParameterType.GetProperties()
                 .Where(f => f.GetCustomAttribute<FromJsonAttribute>() != null).ToList();
     }
