@@ -9,7 +9,7 @@ namespace Demo.Models.Wrapper
     {
         [FromJson]
         [Required]
-        public Product Product { get; set; }
+        public Product Product { get; set; } = null!;
 
         [FromJson]
         public ProductData? ProductData { get; set; }
@@ -18,7 +18,7 @@ namespace Demo.Models.Wrapper
         [Required]
         public int? ProductId { get; set; }
 
-        public string ProductName { get; set; }
-        public IFormFileCollection Files { get; set; }
+        public string? ProductName { get; set; }
+        public IFormFileCollection Files { get; set; } = new FormFileCollection();
     }
 }

@@ -7,7 +7,7 @@ namespace Demo.Models.Wrapper {
 		[Required]
 		public int? ProductId { get; set; }
 		
-		public string ProductName { get; set; }
-		public IFormFileCollection  Files { get; set; }
+		public string? ProductName { get; set; }
+		public IFormFileCollection  Files { get; set; } = new FormFileCollection();
 	}
 }

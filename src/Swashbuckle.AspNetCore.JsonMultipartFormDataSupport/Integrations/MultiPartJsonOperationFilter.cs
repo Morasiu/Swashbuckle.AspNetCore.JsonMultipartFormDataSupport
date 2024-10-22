@@ -97,7 +97,7 @@ namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Integrations
         /// Generate schema for propertyInfo
         /// </summary>
         /// <returns></returns>
-        private OpenApiSchema? GetSchema(OperationFilterContext context, PropertyInfo propertyInfo)
+        private OpenApiSchema GetSchema(OperationFilterContext context, PropertyInfo propertyInfo)
         {
             bool present =
                 context.SchemaRepository.TryLookupByType(propertyInfo.PropertyType, out OpenApiSchema openApiSchema);

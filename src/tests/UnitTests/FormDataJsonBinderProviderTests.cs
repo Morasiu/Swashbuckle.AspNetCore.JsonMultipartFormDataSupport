@@ -14,7 +14,7 @@ public class FormDataJsonBinderProviderTests {
 		var options = Substitute.For<IOptions<JsonOptions>>();
 		var sut = new FormDataJsonBinderProvider(options);
 		// Act
-		var action = () => sut.GetBinder(null);
+		var action = () => sut.GetBinder(null!);
 		// Assert
 		action.Should().Throw<ArgumentNullException>();
 	}

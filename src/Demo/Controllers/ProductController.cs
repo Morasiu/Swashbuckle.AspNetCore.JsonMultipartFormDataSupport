@@ -29,14 +29,14 @@ namespace Demo.Controllers {
 		public IActionResult Post([FromForm] RequiredProductWrapper wrapper) {
 			var wrapperProduct = wrapper.Product ?? throw new NullReferenceException(nameof(wrapper.Product));
 			var images = wrapper.Files;
-			return Ok(new { wrapperProduct, images = images?.Select(a => a.FileName) });
+			return Ok(new { wrapperProduct, images = images.Select(a => a.FileName) });
 		}
 
 		[HttpPost("wrapper")]
 		public IActionResult PostWrapper([FromForm] ProductWrapper wrapper) {
 			var wrapperProduct = wrapper.Product ?? throw new NullReferenceException(nameof(wrapper.Product));
 			var images = wrapper.Files;
-			return Ok(new { wrapperProduct, images = images?.Select(a => a.FileName) });
+			return Ok(new { wrapperProduct, images = images.Select(a => a.FileName) });
 		}
 
 		[HttpPost("wrapper/simple")]
@@ -44,7 +44,7 @@ namespace Demo.Controllers {
 			var productName = wrapper.ProductName;
 			var productId = wrapper.ProductId ?? throw new NullReferenceException(nameof(wrapper.ProductId));
 			var images = wrapper.Files;
-			return Ok(new { productName, productId, images = images?.Select(a => a.FileName) });
+			return Ok(new { productName, productId, images = images.Select(a => a.FileName) });
 		}
 
 		[HttpPost("wrapper/complex")]
@@ -57,7 +57,7 @@ namespace Demo.Controllers {
 				productName, 
 				productId, 
 				product = JsonConvert.SerializeObject(product),
-				images = images?.Select(a => a.FileName)
+				images = images.Select(a => a.FileName)
 			});
 		}
 
@@ -74,7 +74,7 @@ namespace Demo.Controllers {
                 productName,
                 productId,
                 product = JsonConvert.SerializeObject(product),
-                images = images?.Select(a => a.FileName),
+                images = images.Select(a => a.FileName),
                 data = JsonConvert.SerializeObject(data)
             });
         }
