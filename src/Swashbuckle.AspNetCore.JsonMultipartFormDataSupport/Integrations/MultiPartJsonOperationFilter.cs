@@ -46,7 +46,7 @@ namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Integrations
             foreach (var descriptor in descriptors) {
                 descriptor.Name = GetParameterName(descriptor.Name);
 
-                var mediaType = operation.RequestBody.Content.First().Value;
+                var mediaType = operation.RequestBody?.Content.First().Value;
                 HandleFromJsonAttribute(mediaType, context, descriptor);
             }
         }
