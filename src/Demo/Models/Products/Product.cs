@@ -1,14 +1,12 @@
-using System;
+namespace Demo.Models.Products;
 
-namespace Demo.Models.Products {
-	public class Product {
-		public Guid Id { get; set; }
-		public string? Name { get; set; }
-		public ProductType Type { get; set; }
-	}
+public class Product {
+	public Guid Id { get; set; }
+	public string? Name { get; set; }
+	public ProductType Type { get; set; }
+}
 
-	public enum ProductType {
-		Phone,
-		Laptop
-	}
+public enum ProductType {
+	Phone,
+	Laptop
 }

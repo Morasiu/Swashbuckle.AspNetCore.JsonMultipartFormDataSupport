@@ -1,10 +1,7 @@
-﻿using System;
+﻿namespace Demo.Models.Products;
 
-namespace Demo.Models.Products
+public class ProductData
 {
-    public class ProductData
-    {
-        public double Price { get; set; }
-        public DateTime StartDate { get; set; }
-    }
+    public double Price { get; set; }
+    public DateTime StartDate { get; set; }
 }
