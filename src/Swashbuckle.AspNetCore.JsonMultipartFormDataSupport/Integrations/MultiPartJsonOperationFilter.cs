@@ -61,6 +61,12 @@ namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Integrations
                 var schemaProperties = GetSchemaProperties(context, mediaType, propertyInfo);
 
                 // Override schema properties
+                var allOf = mediaType.Schema.AllOf.Where(x => x.Properties.Count > 0).ToList();
+                foreach (var openApiSchema in allOf)
+                {
+                    openApiSchema.Properties = schemaProperties;
+                }
+                mediaType.Schema.AllOf = allOf;
                 mediaType.Schema.Properties = schemaProperties;
             }
         }
@@ -68,8 +74,11 @@ namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Integrations
         private Dictionary<string, OpenApiSchema> GetSchemaProperties(OperationFilterContext context, OpenApiMediaType mediaType,
                                                                       PropertyInfo propertyInfo) {
             // Group all exploded properties.
-            var allProperties = mediaType.Schema.Properties
-                                             .GroupBy(pair => pair.Key.Split('.')[0]);
+            // IEnumerable<IGrouping<string, KeyValuePair<string, OpenApiSchema>>> allProperties = mediaType.Schema.Properties
+            //                                  .GroupBy(pair => pair.Key.Split('.')[0]);
+            var allProperties = mediaType.Schema.AllOf
+                .SelectMany(x => x.Properties)
+                .GroupBy(pair => pair.Key.Split('.')[0]);
 
             var schemaProperties = new Dictionary<string, OpenApiSchema>();
 
