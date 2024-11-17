@@ -1,4 +1,4 @@
-using Demo.Models.Products;
+using DemoOld.Models.Products;
 using FluentValidation.AspNetCore;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
@@ -13,7 +13,7 @@ using Swashbuckle.AspNetCore.Filters;
 using Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Extensions;
 using Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Integrations;
 
-namespace Demo {
+namespace DemoOld {
 	public class Startup {
 		public Startup(IConfiguration configuration) {
 			Configuration = configuration;
@@ -49,7 +49,7 @@ namespace Demo {
 			services.AddSwaggerExamplesFromAssemblyOf<ProductExamples>();
 			services.AddSwaggerGen(o => {
 				o.SwaggerDoc("v1", new OpenApiInfo {
-					Title = "Demo",
+					Title = "DemoOld",
 					Version = "v1"
 				});
 			});
@@ -77,7 +77,6 @@ namespace Demo {
 			app.UseEndpoints(endpoints => {
 				endpoints.MapControllers();
 			});
-
 		}
 	}
 }

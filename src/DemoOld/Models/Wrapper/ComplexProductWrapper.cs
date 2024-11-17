@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Demo.Models.Products;
+using DemoOld.Models.Products;
+using Microsoft.AspNetCore.Http;
 using Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Attributes;
 
-namespace Demo.Models.Wrapper; 
+namespace DemoOld.Models.Wrapper; 
 
 public class ComplexProductWrapper {
 	[FromJson]
