@@ -11,72 +11,72 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Swashbuckle.AspNetCore.Filters;
 using Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Extensions;
-using Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Integrations;
 
-namespace DemoOld {
-	public class Startup {
-		public Startup(IConfiguration configuration) {
-			Configuration = configuration;
-		}
+namespace DemoOld;
 
-		public IConfiguration Configuration { get; }
+public class Startup {
+	public Startup(IConfiguration configuration) {
+		Configuration = configuration;
+	}
 
-		// This method gets called by the runtime. Use this method to add services to the container.
-		public void ConfigureServices(IServiceCollection services) {
-			// ===== System.Text.Json =====
-			// services.AddControllers()
-			// 	.AddJsonOptions(options => {
-			// 		options.JsonSerializerOptions.WriteIndented = true;
-			// 		options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-			// 	});
+	public IConfiguration Configuration { get; }
 
-			// ===== JSON.Net- =====
-			services.AddControllers()
-			        .AddNewtonsoftJson(options => {
-				        options.SerializerSettings.Converters.Add(new StringEnumConverter());
-				        options.SerializerSettings.Formatting = Formatting.Indented;
-			        })
-			        .AddFluentValidation(f => {
-				        f.RegisterValidatorsFromAssemblyContaining<ProductValidator>();
-				        // Important! Without this it won't work automatically
-				        //  vvv
-				        f.ImplicitlyValidateChildProperties = true;
+	// This method gets called by the runtime. Use this method to add services to the container.
+	public void ConfigureServices(IServiceCollection services) {
+		// ===== System.Text.Json =====
+		// services.AddControllers()
+		// 	.AddJsonOptions(options => {
+		// 		options.JsonSerializerOptions.WriteIndented = true;
+		// 		options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+		// 	});
+
+		// ===== JSON.Net- =====
+		services.AddControllers()
+			.AddNewtonsoftJson(options => {
+				options.SerializerSettings.Converters.Add(new StringEnumConverter());
+				options.SerializerSettings.Formatting = Formatting.Indented;
+			})
+			.AddFluentValidation(f => {
+				f.RegisterValidatorsFromAssemblyContaining<ProductValidator>();
+				// Important! Without this it won't work automatically
+				//  vvv
+				f.ImplicitlyValidateChildProperties = true;
 				        
-				        f.LocalizationEnabled = false;
-			        });
-
-			services.AddJsonMultipartFormDataSupport(JsonSerializerChoice.Newtonsoft);
-			services.AddSwaggerExamplesFromAssemblyOf<ProductExamples>();
-			services.AddSwaggerGen(o => {
-				o.SwaggerDoc("v1", new OpenApiInfo {
-					Title = "DemoOld",
-					Version = "v1"
-				});
+				f.LocalizationEnabled = false;
 			});
-			services.AddFluentValidationRulesToSwagger();
+
+		// services.AddSingleton<FormDataJsonBinderProvider<NewtonsoftJsonModelBinder>>(sp => new(new(sp.GetRequiredService<IOptions<MvcNewtonsoftJsonOptions>>())));
+		services.AddJsonMultipartFormDataSupport<NewtonsoftSerializationProvider>();
+		services.AddSwaggerExamplesFromAssemblyOf<ProductExamples>();
+		services.AddSwaggerGen(o => {
+			o.SwaggerDoc("v1", new OpenApiInfo {
+				Title = "DemoOld",
+				Version = "v1"
+			});
+		});
+		services.AddFluentValidationRulesToSwagger();
+	}
+
+	// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+	public void Configure(IApplicationBuilder app, IWebHostEnvironment env) {
+		if (env.IsDevelopment()) {
+			app.UseDeveloperExceptionPage();
 		}
 
-		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IWebHostEnvironment env) {
-			if (env.IsDevelopment()) {
-				app.UseDeveloperExceptionPage();
-			}
+		app.UseSwagger();
+		app.UseSwaggerUI(o => {
+			o.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+			o.RoutePrefix = string.Empty;
+		});
 
-			app.UseSwagger();
-			app.UseSwaggerUI(o => {
-				o.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-				o.RoutePrefix = string.Empty;
-			});
+		app.UseHttpsRedirection();
 
-			app.UseHttpsRedirection();
+		app.UseRouting();
 
-			app.UseRouting();
+		app.UseAuthorization();
 
-			app.UseAuthorization();
-
-			app.UseEndpoints(endpoints => {
-				endpoints.MapControllers();
-			});
-		}
+		app.UseEndpoints(endpoints => {
+			endpoints.MapControllers();
+		});
 	}
 }

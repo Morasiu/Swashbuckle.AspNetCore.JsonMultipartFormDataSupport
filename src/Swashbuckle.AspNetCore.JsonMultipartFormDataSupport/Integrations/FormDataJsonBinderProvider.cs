@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Attributes;
 
 namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Integrations {
@@ -11,18 +9,13 @@ namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Integrations {
 	/// Looks for field with <see cref="FromJsonAttribute"/> and use <see cref="JsonModelBinder"/> for binder.
 	/// </summary>
 	public class FormDataJsonBinderProvider : IModelBinderProvider {
-		private readonly IOptions<JsonOptions> _jsonOptions;
-		private readonly IOptions<MvcNewtonsoftJsonOptions> _newtonSoftJsonOptions;
+		readonly JsonModelBinder _jsonModelBinder;
 
-		public FormDataJsonBinderProvider(IOptions<JsonOptions> jsonOptions) {
-			_jsonOptions = jsonOptions;
+		public FormDataJsonBinderProvider(JsonModelBinder jsonModelBinder)
+		{
+			_jsonModelBinder = jsonModelBinder;
 		}
-
-
-		public FormDataJsonBinderProvider(IOptions<MvcNewtonsoftJsonOptions> newtonSoftJsonOptions) {
-			_newtonSoftJsonOptions = newtonSoftJsonOptions;
-		}
-
+		
 		/// <inheritdoc />
 		public IModelBinder GetBinder(ModelBinderProviderContext context) {
 			if (context == null) throw new ArgumentNullException(nameof(context));
@@ -42,13 +35,7 @@ namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Integrations {
 			// Do not use this provider if this property does not have the From attribute
 			if (propInfo.GetCustomAttribute<FromJsonAttribute>() == null) return null;
 
-			// All criteria met; use the FormDataJsonBinder
-			if (_jsonOptions != null)
-				return new JsonModelBinder(_jsonOptions);
-			else if (_newtonSoftJsonOptions != null)
-				return new JsonModelBinder(_newtonSoftJsonOptions);
-			else
-				return new JsonModelBinder();
+			return _jsonModelBinder;
 		}
 	}
 }

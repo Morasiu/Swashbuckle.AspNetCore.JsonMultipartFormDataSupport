@@ -1,7 +1,4 @@
-﻿using System;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Integrations;
 
 namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Extensions {
@@ -12,27 +9,27 @@ namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Extensions {
 		/// <summary>
 		/// Adds support for json in multipart/form-data requests
 		/// </summary>
-		public static IServiceCollection AddJsonMultipartFormDataSupport(this IServiceCollection services, JsonSerializerChoice jsonSerializerChoice) {
-			JsonMultipartFormDataOptions.JsonSerializerChoice = jsonSerializerChoice;
+		public static IServiceCollection AddJsonMultipartFormDataSupport<TMultipartJsonSerializationProvider>(this IServiceCollection services) 
+			where TMultipartJsonSerializationProvider : class, IMultipartJsonSerializationProvider
+		{
+			services.AddSingleton<IMultipartJsonSerializationProvider, TMultipartJsonSerializationProvider>();
 
-			switch (jsonSerializerChoice) {
-				case JsonSerializerChoice.SystemText:
-					services.AddMvc(options => {
-						var jsonOptions = services.BuildServiceProvider().GetRequiredService<IOptions<JsonOptions>>();
-						options.ModelBinderProviders.Insert(0, new FormDataJsonBinderProvider(jsonOptions));
-					});
-					break;
-				case JsonSerializerChoice.Newtonsoft:
-					services.AddMvc(options => {
-						var jsonOptions = services.BuildServiceProvider().GetRequiredService<IOptions<MvcNewtonsoftJsonOptions>>();
-						options.ModelBinderProviders.Insert(0, new FormDataJsonBinderProvider(jsonOptions));
-					});
-					break;
-				default:
-					throw new ArgumentOutOfRangeException(nameof(jsonSerializerChoice), jsonSerializerChoice, null);
-			}
-
-
+			return AddJsonMultipartFormDataSupport(services);
+		}
+		
+		/// <summary>
+		/// Adds support for json in multipart/form-data requests
+		/// </summary>
+		public static IServiceCollection AddJsonMultipartFormDataSupport(this IServiceCollection services)
+		{
+			var serviceProvider = services.BuildServiceProvider();
+			
+			var serializationProvider = serviceProvider.GetRequiredService<IMultipartJsonSerializationProvider>();
+			
+			services.AddMvc(options =>
+			{
+				options.ModelBinderProviders.Insert(0, new FormDataJsonBinderProvider(new(serializationProvider)));
+			});
 
 			services.AddSwaggerGen(options => {
 				options.OperationFilter<MultiPartJsonOperationFilter>();
