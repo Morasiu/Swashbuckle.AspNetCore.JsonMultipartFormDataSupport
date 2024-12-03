@@ -1,13 +1,14 @@
-using System.Xml;
+using Demo;
 using Demo.Models.Products;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Swashbuckle.AspNetCore.Filters;
 using Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Extensions;
-using Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Integrations;
-using Formatting=Newtonsoft.Json.Formatting;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,7 +31,7 @@ builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddFluentValidationClientsideAdapters();
 builder.Services.AddValidatorsFromAssemblyContaining<ProductValidator>();
 ValidatorOptions.Global.LanguageManager.Enabled = false;
-builder.Services.AddJsonMultipartFormDataSupport(JsonSerializerChoice.Newtonsoft);
+builder.Services.AddJsonMultipartFormDataSupport<NewtonsoftSerializationProvider>();
 builder.Services.AddSwaggerExamplesFromAssemblyOf<ProductExamples>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

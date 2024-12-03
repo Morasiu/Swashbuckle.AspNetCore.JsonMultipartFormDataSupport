@@ -2,17 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
-using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.Filters;
 using Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Attributes;
 using Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Extensions;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Integrations
 {
@@ -22,21 +20,17 @@ namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Integrations
     public class MultiPartJsonOperationFilter : IOperationFilter
     {
         private readonly IServiceProvider _serviceProvider;
-        private readonly IOptions<JsonOptions> _jsonOptions;
-        private readonly IOptions<MvcNewtonsoftJsonOptions> _newtonsoftJsonOption;
         private readonly IOptions<SwaggerGeneratorOptions> _generatorOptions;
+        private readonly IMultipartJsonSerializationProvider _serializationResolver;
 
         /// <summary>
         /// Creates <see cref="MultiPartJsonOperationFilter"/>
         /// </summary>
-        public MultiPartJsonOperationFilter(IServiceProvider serviceProvider, IOptions<JsonOptions> jsonOptions,
-                                            IOptions<MvcNewtonsoftJsonOptions> newtonsoftJsonOption,
-                                            IOptions<SwaggerGeneratorOptions> generatorOptions)
+        public MultiPartJsonOperationFilter(IServiceProvider serviceProvider, IOptions<SwaggerGeneratorOptions> generatorOptions)
         {
             _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
-            _jsonOptions = jsonOptions;
-            _newtonsoftJsonOption = newtonsoftJsonOption;
             _generatorOptions = generatorOptions;
+            _serializationResolver = serviceProvider.GetRequiredService<IMultipartJsonSerializationProvider>();
         }
 
         /// <inheritdoc />
@@ -146,20 +140,13 @@ namespace Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Integrations
                 Explode = false
             });
         }
-
+        
         private void AddExample(PropertyInfo propertyInfo, OpenApiSchema openApiSchema)
         {
             var example = GetExampleFor(propertyInfo.PropertyType);
             // Example do not exist. Use default.
             if (example == null) return;
-            string json;
-
-            if (JsonMultipartFormDataOptions.JsonSerializerChoice == JsonSerializerChoice.SystemText)
-                json = JsonSerializer.Serialize(example, _jsonOptions.Value.JsonSerializerOptions);
-            else if (JsonMultipartFormDataOptions.JsonSerializerChoice == JsonSerializerChoice.Newtonsoft)
-                json = JsonConvert.SerializeObject(example, _newtonsoftJsonOption.Value.SerializerSettings);
-            else
-                json = JsonSerializer.Serialize(example);
+            var json = _serializationResolver.Serialize(example);
             openApiSchema.Example = new OpenApiString(json);
         }
 

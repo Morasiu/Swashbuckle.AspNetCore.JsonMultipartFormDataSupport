@@ -1,8 +1,8 @@
-﻿using System.Text.Json;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Primitives;
 using Swashbuckle.AspNetCore.JsonMultipartFormDataSupport.Integrations;
 using UnitTests.TestData.Types;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace UnitTests;
 
@@ -10,7 +10,7 @@ public class JsonModelBinderTests {
 	[Test]
 	public void BindModelAsync_NullContext_ShouldReturnNull() {
 		// Arrange
-		var sut = new JsonModelBinder();
+		var sut = new JsonModelBinder(new NewtonsoftSerializationProvider());
 		// Act
 		var action = async () => await sut.BindModelAsync(null!);
 		// Assert
@@ -20,7 +20,7 @@ public class JsonModelBinderTests {
 	[Test]
 	public async Task BindModelAsync_ShouldBindData() {
 		// Arrange
-		var sut = new JsonModelBinder();
+		var sut = new JsonModelBinder(new NewtonsoftSerializationProvider());
 		var testType = new TestType {
 			Id = 1,
 			Text = Guid.NewGuid().ToString()
